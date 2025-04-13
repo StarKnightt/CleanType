@@ -1,26 +1,57 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './FullscreenEditor.module.css';
+import HistoryPanel from './HistoryPanel';
 
 const STORAGE_KEY = 'freewrite-content';
 const FONT_STORAGE_KEY = 'freewrite-font';
 const SIZE_STORAGE_KEY = 'freewrite-size';
+const ENTRIES_KEY = 'freewrite-entries';
+const THEME_KEY = 'freewrite-theme';
+
+interface Entry {
+  id: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  title: string;
+}
 
 type FontStyle = 'lato' | 'arial' | 'system' | 'serif' | 'random';
+type Theme = 'dark' | 'light';
 
 const FONT_LABELS: Record<FontStyle, string> = {
   lato: 'Lato',
   arial: 'Arial',
   system: 'System',
   serif: 'Serif',
-  random: 'Random'
+  random: 'Default'
 };
 
 const SIZE_PRESETS = ['16', '18', '20', '24', '28'];
 
 const FullscreenEditor: React.FC = () => {
   const [content, setContent] = useState(() => {
-    // Load saved content on startup
     return localStorage.getItem(STORAGE_KEY) || '';
+  });
+
+  const [currentEntry, setCurrentEntry] = useState<Entry | null>(() => {
+    const savedContent = localStorage.getItem(STORAGE_KEY);
+    if (savedContent) {
+      return {
+        id: 'current',
+        content: savedContent,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        title: 'Untitled'
+      };
+    }
+    return null;
+  });
+
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [entries, setEntries] = useState<Entry[]>(() => {
+    return JSON.parse(localStorage.getItem(ENTRIES_KEY) || '[]');
   });
 
   const [currentFont, setCurrentFont] = useState<FontStyle>(() => {
@@ -35,16 +66,60 @@ const FullscreenEditor: React.FC = () => {
   const [selectionStart, setSelectionStart] = useState<number>(0);
   const [selectionEnd, setSelectionEnd] = useState<number>(0);
 
-  // Auto-save content
+  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(() => {
+    return localStorage.getItem(THEME_KEY) !== 'light';
+  });
+
+  // Load entries when component mounts
+  useEffect(() => {
+    const savedEntries = localStorage.getItem(ENTRIES_KEY);
+    if (savedEntries) {
+      setEntries(JSON.parse(savedEntries));
+    }
+  }, []);
+
+  const saveCurrentEntry = async () => {
+    if (currentEntry && content.trim()) {
+      const updatedEntry = {
+        ...currentEntry,
+        content,
+        updatedAt: new Date().toISOString()
+      };
+      
+      const newEntries = [...entries];
+      const index = newEntries.findIndex(e => e.id === currentEntry.id);
+      
+      if (index >= 0) {
+        newEntries[index] = updatedEntry;
+      } else {
+        newEntries.push(updatedEntry);
+      }
+      
+      setEntries(newEntries);
+      localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
+      localStorage.setItem(STORAGE_KEY, content);
+      setHasUnsavedChanges(false);
+    }
+  };
+
+  // Auto-save content and entries
   useEffect(() => {
     const saveContent = () => {
-      localStorage.setItem(STORAGE_KEY, content);
+      if (currentEntry) {
+        localStorage.setItem(STORAGE_KEY, content);
+        saveCurrentEntry();
+      }
     };
-
-    // Save on content change with debounce
     const timeoutId = setTimeout(saveContent, 300);
     return () => clearTimeout(timeoutId);
-  }, [content]);
+  }, [content, currentEntry]);
+
+  // Track unsaved changes
+  useEffect(() => {
+    if (currentEntry && currentEntry.content !== content) {
+      setHasUnsavedChanges(true);
+    }
+  }, [content, currentEntry]);
 
   // Save font preference
   useEffect(() => {
@@ -73,11 +148,109 @@ const FullscreenEditor: React.FC = () => {
     return () => document.removeEventListener('wheel', handleZoom);
   }, [handleZoom]);
 
-  // Handle keyboard shortcuts
+  const handleSelectEntry = (entry: Entry) => {
+    if (hasUnsavedChanges) {
+      const shouldSwitch = window.confirm(
+        'You have unsaved changes. Would you like to save before switching entries?'
+      );
+      
+      if (shouldSwitch) {
+        saveCurrentEntry().then(() => {
+          setCurrentEntry(entry);
+          setContent(entry.content);
+          setHasUnsavedChanges(false);
+        });
+      } else {
+        setCurrentEntry(entry);
+        setContent(entry.content);
+        setHasUnsavedChanges(false);
+      }
+    } else {
+      setCurrentEntry(entry);
+      setContent(entry.content);
+    }
+  };
+
+  const handleDeleteEntry = (entryToDelete: Entry) => {
+    const newEntries = entries.filter(e => e.id !== entryToDelete.id);
+    setEntries(newEntries);
+    localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
+
+    // Only create a new entry if we're deleting the current one
+    if (currentEntry?.id === entryToDelete.id) {
+      const newEntry: Entry = {
+        id: Date.now().toString(),
+        content: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        title: 'Untitled'
+      };
+      setCurrentEntry(newEntry);
+      setContent('');
+      setHasUnsavedChanges(false);
+      
+      // Add the new entry to the list
+      const updatedEntries = [...newEntries, newEntry];
+      setEntries(updatedEntries);
+      localStorage.setItem(ENTRIES_KEY, JSON.stringify(updatedEntries));
+    }
+  };
+
+  const toggleTheme = () => {
+    setIsDarkTheme(prev => {
+      const newTheme = !prev;
+      localStorage.setItem(THEME_KEY, newTheme ? 'dark' : 'light');
+      return newTheme;
+    });
+  };
+
+  const createNewEntry = () => {
+    const createEntry = () => {
+      const newEntry: Entry = {
+        id: Date.now().toString(),
+        content: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        title: 'Untitled'
+      };
+      setCurrentEntry(newEntry);
+      setContent('');
+      setHasUnsavedChanges(false);
+      
+      // Save the new entry immediately
+      const newEntries = [...entries, newEntry];
+      setEntries(newEntries);
+      localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
+    };
+
+    if (hasUnsavedChanges && content.trim()) {
+      const shouldSave = window.confirm(
+        'You have unsaved changes. Would you like to save before creating a new entry?'
+      );
+      
+      if (shouldSave) {
+        saveCurrentEntry().then(createEntry);
+      } else {
+        createEntry();
+      }
+    } else {
+      createEntry();
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // New Document (Ctrl + N)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+      e.preventDefault();
+      createNewEntry();
+      return;
+    }
+
     // Save (Ctrl + S)
     if ((e.metaKey || e.ctrlKey) && e.key === 's') {
       e.preventDefault();
+      // Will be handled by auto-save
+      return;
     }
 
     // Select All (Ctrl + A)
@@ -142,14 +315,6 @@ const FullscreenEditor: React.FC = () => {
       // We'll implement find functionality later
     }
 
-    // New Document (Ctrl + N)
-    if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
-      e.preventDefault();
-      if (content && window.confirm('Do you want to start a new document? Any unsaved changes will be lost.')) {
-        setContent('');
-      }
-    }
-
     // Maximize/Minimize (F11)
     if (e.key === 'F11') {
       e.preventDefault();
@@ -176,7 +341,7 @@ const FullscreenEditor: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isDarkTheme ? styles.darkTheme : styles.lightTheme}`}>
       <div className={styles.bottomNav}>
         <div className={styles.leftControls}>
           <div className={styles.sizeWrapper}>
@@ -213,15 +378,28 @@ const FullscreenEditor: React.FC = () => {
         </div>
 
         <div className={styles.rightControls}>
-          <button className={styles.navButton}>
+          <button 
+            className={styles.navButton}
+            onClick={createNewEntry}
+          >
             New Entry
           </button>
           <span className={styles.navDot}>•</span>
-          <button className={styles.navButton}>
+          <button 
+            className={`${styles.navButton} ${isHistoryOpen ? styles.active : ''}`}
+            onClick={() => setIsHistoryOpen(!isHistoryOpen)}
+          >
             History
           </button>
           <span className={styles.navDot}>•</span>
           <div className={styles.timer}>00:00</div>
+          <span className={styles.navDot}>•</span>
+          <button 
+            className={styles.navButton}
+            onClick={toggleTheme}
+          >
+            {isDarkTheme ? '☀️' : '🌙'}
+          </button>
           <span className={styles.navDot}>•</span>
           <button 
             className={styles.navButton}
@@ -231,9 +409,13 @@ const FullscreenEditor: React.FC = () => {
           </button>
         </div>
       </div>
+
       <textarea
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(e) => {
+          setContent(e.target.value);
+          setHasUnsavedChanges(true);
+        }}
         onKeyDown={handleKeyDown}
         onSelect={handleSelect}
         className={`${styles.editor} ${styles[`font-${currentFont}`]}`}
@@ -241,6 +423,16 @@ const FullscreenEditor: React.FC = () => {
         spellCheck={false}
         autoFocus
         placeholder="Start writing..."
+      />
+
+      <HistoryPanel
+        isOpen={isHistoryOpen}
+        entries={entries}
+        currentEntry={currentEntry}
+        onClose={() => setIsHistoryOpen(false)}
+        onSelectEntry={handleSelectEntry}
+        onDeleteEntry={handleDeleteEntry}
+        isDarkTheme={isDarkTheme}
       />
     </div>
   );
