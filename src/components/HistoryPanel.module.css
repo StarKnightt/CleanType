@@ -1,0 +1,133 @@
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.darkTheme {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.lightTheme {
+  background-color: #ffffff;
+  color: #333333;
+  border-left: 1px solid #eaeaea;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lightTheme .header {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.header h2 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+.entriesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.entryItem {
+  padding: 0.75rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.darkTheme .entryItem:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.lightTheme .entryItem:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.darkTheme .entryItem.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.lightTheme .entryItem.active {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.entryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.entryDate {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.entryItem:hover .deleteButton {
+  opacity: 0.7;
+}
+
+.deleteButton:hover {
+  opacity: 1 !important;
+}
+
+.entryPreview {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  opacity: 0.5;
+  font-style: italic;
+} 

@@ -59,6 +59,10 @@
   align-items: flex-start;
   justify-content: center;
   overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Ensure the textarea doesn't show a focus ring on any browser */
@@ -86,20 +90,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
   z-index: 100;
   color: #7a7a7a;
-}
-
-.container:hover .bottomNav {
+  font-size: 1rem;
+  pointer-events: auto;
   opacity: 1;
 }
 
 .leftControls, .rightControls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
 }
 
 .rightControls {
@@ -112,46 +113,24 @@
   user-select: none;
 }
 
-.navButton {
-  background: none;
-  border: none;
-  color: #7a7a7a;
-  padding: 0.4rem;
+.navButton, .fontOption {
+  all: unset;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
+  color: inherit;
+  transition: color 0.2s ease;
+  font-size: 1rem;
 }
 
-.navButton:hover {
+.navButton:hover, .fontOption:hover {
   color: #fff;
 }
 
-.navButton.active {
+.navButton.active, .fontOption.active {
   color: #fff;
 }
 
-/* Timer styles */
 .timer {
   font-variant-numeric: tabular-nums;
-  min-width: 60px;
-  text-align: center;
-}
-
-.fontOption {
-  background: none;
-  border: none;
-  color: #7a7a7a;
-  padding: 0.4rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: color 0.2s ease;
-}
-
-.fontOption:hover, .fontOption.active {
-  color: #fff;
 }
 
 .sizeWrapper {
@@ -160,21 +139,13 @@
 }
 
 .sizeInput {
-  background: none;
-  border: none;
-  color: #7a7a7a;
+  all: unset;
   width: 45px;
-  padding: 0.4rem;
-  font-size: 0.9rem;
   cursor: pointer;
+  font-size: 1rem;
 }
 
-.sizeInput:focus {
-  color: #fff;
-  outline: none;
-}
-
-.sizeInput:hover {
+.sizeInput:focus, .sizeInput:hover {
   color: #fff;
 }
 
@@ -183,36 +154,89 @@
   bottom: calc(100% + 0.5rem);
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(30, 30, 30, 0.95);
-  border-radius: 4px;
-  padding: 0.3rem;
   display: none;
   flex-direction: column;
   gap: 0.2rem;
   min-width: 60px;
   text-align: center;
-  padding-bottom: 0.8rem;
-  margin-bottom: -0.8rem;
+  background: transparent;
 }
 
-.sizeWrapper:hover .sizePresets,
-.sizePresets:hover {
+.sizeWrapper:hover .sizePresets {
   display: flex;
 }
 
 .sizePreset {
-  background: none;
-  border: none;
-  color: #7a7a7a;
-  padding: 0.3rem 0.6rem;
+  all: unset;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
+  padding: 0.3rem;
+  transition: color 0.2s ease;
   white-space: nowrap;
-  border-radius: 3px;
+  font-size: 1rem;
 }
 
 .sizePreset:hover {
   color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Light theme specific styles */
+.lightTheme {
+  background-color: #ffffff;
+}
+
+.lightTheme .editor {
+  color: #333;
+  caret-color: #333;
+}
+
+.lightTheme .editor::placeholder {
+  color: #999;
+  opacity: 0.7;
+}
+
+.lightTheme .bottomNav {
+  color: #999;
+}
+
+.lightTheme .navButton,
+.lightTheme .fontOption,
+.lightTheme .sizeInput {
+  color: #999;
+}
+
+.lightTheme .navButton:hover,
+.lightTheme .fontOption:hover,
+.lightTheme .sizeInput:hover,
+.lightTheme .sizePreset:hover {
+  color: #333;
+}
+
+.lightTheme .navButton.active,
+.lightTheme .fontOption.active {
+  color: #333;
+}
+
+.lightTheme .navDot {
+  color: #999;
+}
+
+.darkTheme {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.lightTheme .navButton {
+  color: #666666;
+}
+
+.lightTheme .navButton:hover {
+  color: #333333;
+}
+
+.lightTheme .navButton.active {
+  color: #333333;
+}
+
+.lightTheme .navDot {
+  color: #666666;
 } 
