@@ -1,0 +1,218 @@
+.editor {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  color: #e0e0e0;
+  border: none;
+  outline: none;
+  padding: 3rem;
+  resize: none;
+  line-height: 1.7;
+  caret-color: #e0e0e0;
+  opacity: 0.95;
+  letter-spacing: -0.01em;
+}
+
+/* Font presets */
+.font-lato {
+  font-family: 'Lato', system-ui, sans-serif;
+}
+
+.font-arial {
+  font-family: 'Arial', sans-serif;
+}
+
+.font-system {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.font-serif {
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.font-random {
+  font-family: 'Comic Sans MS', cursive;
+}
+
+.editor::placeholder {
+  color: #666;
+  opacity: 0.7;
+}
+
+.editor::-webkit-scrollbar {
+  display: none;
+}
+
+.editor {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #161616;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Ensure the textarea doesn't show a focus ring on any browser */
+.editor:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+/* Apply a subtle fade effect when the app starts */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.container {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.bottomNav {
+  position: fixed;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 100;
+  color: #7a7a7a;
+}
+
+.container:hover .bottomNav {
+  opacity: 1;
+}
+
+.leftControls, .rightControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rightControls {
+  margin-left: auto;
+}
+
+.navDot {
+  color: #7a7a7a;
+  margin: 0 0.2rem;
+  user-select: none;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  color: #7a7a7a;
+  padding: 0.4rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.navButton:hover {
+  color: #fff;
+}
+
+.navButton.active {
+  color: #fff;
+}
+
+/* Timer styles */
+.timer {
+  font-variant-numeric: tabular-nums;
+  min-width: 60px;
+  text-align: center;
+}
+
+.fontOption {
+  background: none;
+  border: none;
+  color: #7a7a7a;
+  padding: 0.4rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.fontOption:hover, .fontOption.active {
+  color: #fff;
+}
+
+.sizeWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.sizeInput {
+  background: none;
+  border: none;
+  color: #7a7a7a;
+  width: 45px;
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.sizeInput:focus {
+  color: #fff;
+  outline: none;
+}
+
+.sizeInput:hover {
+  color: #fff;
+}
+
+.sizePresets {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(30, 30, 30, 0.95);
+  border-radius: 4px;
+  padding: 0.3rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 60px;
+  text-align: center;
+  padding-bottom: 0.8rem;
+  margin-bottom: -0.8rem;
+}
+
+.sizeWrapper:hover .sizePresets,
+.sizePresets:hover {
+  display: flex;
+}
+
+.sizePreset {
+  background: none;
+  border: none;
+  color: #7a7a7a;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border-radius: 3px;
+}
+
+.sizePreset:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+} 
