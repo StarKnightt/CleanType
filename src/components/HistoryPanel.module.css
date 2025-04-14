@@ -2,132 +2,218 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
-  height: 100vh;
-  padding: 1rem;
-  transition: transform 0.3s ease;
-  overflow-y: auto;
+  bottom: 0;
+  width: 350px;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
   z-index: 1000;
-}
-
-.darkTheme {
-  background-color: #1a1a1a;
-  color: #e0e0e0;
-}
-
-.lightTheme {
-  background-color: #ffffff;
-  color: #333333;
-  border-left: 1px solid #eaeaea;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
 }
 
 .header {
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.lightTheme .header {
-  border-bottom-color: rgba(0, 0, 0, 0.1);
-}
-
 .header h2 {
-  font-size: 1.1rem;
-  font-weight: 500;
   margin: 0;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .closeButton {
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 1.5rem;
+  all: unset;
   cursor: pointer;
-  padding: 0.2rem 0.4rem;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-}
-
-.closeButton:hover {
-  opacity: 1;
-}
-
-.entriesList {
+  font-size: 24px;
+  width: 32px;
+  height: 32px;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.entryItem {
-  padding: 0.75rem;
-  cursor: pointer;
-  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
   transition: background-color 0.2s ease;
 }
 
-.darkTheme .entryItem:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.lightTheme .entryItem:hover {
-  background-color: rgba(0, 0, 0, 0.03);
+.searchContainer {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.darkTheme .entryItem.active {
-  background-color: rgba(255, 255, 255, 0.1);
+.searchInput {
+  all: unset;
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 15px;
 }
 
-.lightTheme .entryItem.active {
-  background-color: rgba(0, 0, 0, 0.05);
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.entriesList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.entryItem {
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.entryItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.entryItem.active {
+  background: rgba(100, 100, 255, 0.15);
 }
 
 .entryHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
+}
+
+.entryTitle {
+  font-weight: 500;
+  font-size: 15px;
 }
 
 .entryDate {
-  font-size: 0.8rem;
+  font-size: 13px;
   opacity: 0.7;
-}
-
-.deleteButton {
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0.2rem;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.entryItem:hover .deleteButton {
-  opacity: 0.7;
-}
-
-.deleteButton:hover {
-  opacity: 1 !important;
 }
 
 .entryPreview {
-  font-size: 0.9rem;
-  opacity: 0.8;
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 12px;
   line-height: 1.4;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+}
+
+.deleteButton {
+  all: unset;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  background: rgba(255, 0, 0, 0.15);
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+  background: rgba(255, 0, 0, 0.25);
 }
 
 .emptyState {
   text-align: center;
-  padding: 2rem;
+  padding: 32px;
   opacity: 0.5;
-  font-style: italic;
+  font-size: 15px;
+}
+
+.footer {
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.clearAllButton {
+  all: unset;
+  cursor: pointer;
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  background: rgba(255, 0, 0, 0.15);
+  text-align: center;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.clearAllButton:hover {
+  background: rgba(255, 0, 0, 0.25);
+}
+
+/* Light theme */
+.light {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+}
+
+.light .header,
+.light .searchContainer,
+.light .footer {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.light .closeButton:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.light .searchInput {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.light .searchInput::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.light .entryItem {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.light .entryItem:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.light .entryItem.active {
+  background: rgba(100, 100, 255, 0.1);
+}
+
+.light .deleteButton {
+  background: rgba(255, 0, 0, 0.1);
+}
+
+.light .deleteButton:hover {
+  background: rgba(255, 0, 0, 0.15);
+}
+
+.light .clearAllButton {
+  background: rgba(255, 0, 0, 0.1);
+}
+
+.light .clearAllButton:hover {
+  background: rgba(255, 0, 0, 0.15);
+}
+
+.titleInput {
+  all: unset;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 2px 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  width: 200px;
+}
+
+.light .titleInput {
+  background: rgba(0, 0, 0, 0.05);
 } 

@@ -1,19 +1,276 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
 .editor {
   width: 100%;
   height: 100%;
   background-color: transparent;
-  color: #e0e0e0;
+  color: #333333;
   border: none;
   outline: none;
-  padding: 3rem;
+  padding: 4rem;
   resize: none;
-  line-height: 1.7;
-  caret-color: #e0e0e0;
-  opacity: 0.95;
-  letter-spacing: -0.01em;
+  line-height: 1.5;
+  caret-color: #333333;
+  opacity: 1;
+  letter-spacing: 0;
+  overflow-y: auto;
+  tab-size: 2;
+  font-family: inherit;
+  font-size: 18px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-/* Font presets */
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: opacity 0.2s ease;
+}
+
+.navButton,
+.fontOption,
+.sizeButton {
+  all: unset;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.navButton:hover,
+.fontOption:hover,
+.sizeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sizeWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.sizePresets {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 6px;
+  padding: 6px;
+  gap: 4px;
+  min-width: 60px;
+}
+
+.sizeWrapper:focus-within .sizePresets {
+  display: flex;
+}
+
+.timerDialog {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  padding: 16px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.timerDialog.open {
+  display: flex;
+}
+
+.timerInput {
+  all: unset;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.timerInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.timerPresets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.timerPreset {
+  all: unset;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.timerPreset:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.timerButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.timerButton {
+  all: unset;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: background-color 0.2s ease;
+  flex: 1;
+  font-size: 14px;
+}
+
+.timerButton.primary {
+  background: rgba(100, 100, 255, 0.3);
+}
+
+.timerButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.timerButton.primary:hover {
+  background: rgba(100, 100, 255, 0.4);
+}
+
+.lightTheme .timerDialog {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .timerInput,
+.lightTheme .timerPreset,
+.lightTheme .timerButton {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.lightTheme .timerButton.primary {
+  background: rgba(100, 100, 255, 0.15);
+}
+
+.lightTheme .timerInput::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.lightTheme .timerPreset:hover,
+.lightTheme .timerButton:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .timerButton.primary:hover {
+  background: rgba(100, 100, 255, 0.25);
+}
+
+.leftControls, .rightControls {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.navDot {
+  color: #999;
+  opacity: 0.5;
+  user-select: none;
+}
+
+.navButton.active, .fontOption.active {
+  opacity: 1;
+}
+
+.timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  min-width: 50px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.sizePreset {
+  all: unset;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.sizePreset:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.fontOption {
+  all: unset;
+  cursor: pointer;
+  color: inherit;
+  transition: opacity 0.2s ease;
+  font-size: 13px;
+  padding: 2px 4px;
+}
+
+.fontOption:hover,
+.fontOption.active {
+  opacity: 1;
+}
+
+/* Make sure light theme colors are properly inherited */
+.lightTheme .sizePresets {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .sizePreset {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.lightTheme .sizePreset:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: black;
+}
+
+/* Font styles */
 .font-lato {
   font-family: 'Lato', system-ui, sans-serif;
 }
@@ -34,152 +291,11 @@
   font-family: 'Comic Sans MS', cursive;
 }
 
-.editor::placeholder {
-  color: #666;
-  opacity: 0.7;
+/* Theme styles */
+.darkTheme {
+  background-color: #1a1a1a;
 }
 
-.editor::-webkit-scrollbar {
-  display: none;
-}
-
-.editor {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #161616;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  overflow: hidden;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Ensure the textarea doesn't show a focus ring on any browser */
-.editor:focus {
-  outline: none;
-  box-shadow: none;
-  border: none;
-}
-
-/* Apply a subtle fade effect when the app starts */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.container {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.bottomNav {
-  position: fixed;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 100;
-  color: #7a7a7a;
-  font-size: 1rem;
-  pointer-events: auto;
-  opacity: 1;
-}
-
-.leftControls, .rightControls {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.rightControls {
-  margin-left: auto;
-}
-
-.navDot {
-  color: #7a7a7a;
-  margin: 0 0.2rem;
-  user-select: none;
-}
-
-.navButton, .fontOption {
-  all: unset;
-  cursor: pointer;
-  color: inherit;
-  transition: color 0.2s ease;
-  font-size: 1rem;
-}
-
-.navButton:hover, .fontOption:hover {
-  color: #fff;
-}
-
-.navButton.active, .fontOption.active {
-  color: #fff;
-}
-
-.timer {
-  font-variant-numeric: tabular-nums;
-}
-
-.sizeWrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.sizeInput {
-  all: unset;
-  width: 45px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.sizeInput:focus, .sizeInput:hover {
-  color: #fff;
-}
-
-.sizePresets {
-  position: absolute;
-  bottom: calc(100% + 0.5rem);
-  left: 50%;
-  transform: translateX(-50%);
-  display: none;
-  flex-direction: column;
-  gap: 0.2rem;
-  min-width: 60px;
-  text-align: center;
-  background: transparent;
-}
-
-.sizeWrapper:hover .sizePresets {
-  display: flex;
-}
-
-.sizePreset {
-  all: unset;
-  cursor: pointer;
-  padding: 0.3rem;
-  transition: color 0.2s ease;
-  white-space: nowrap;
-  font-size: 1rem;
-}
-
-.sizePreset:hover {
-  color: #fff;
-}
-
-/* Light theme specific styles */
 .lightTheme {
   background-color: #ffffff;
 }
@@ -195,48 +311,70 @@
 }
 
 .lightTheme .bottomNav {
-  color: #999;
+  color: rgba(0, 0, 0, 0.5);
 }
 
-.lightTheme .navButton,
-.lightTheme .fontOption,
-.lightTheme .sizeInput {
-  color: #999;
+.darkTheme .editor {
+  color: rgba(255, 255, 255, 0.9);
+  caret-color: rgba(255, 255, 255, 0.9);
 }
 
-.lightTheme .navButton:hover,
-.lightTheme .fontOption:hover,
-.lightTheme .sizeInput:hover,
-.lightTheme .sizePreset:hover {
-  color: #333;
+.darkTheme .bottomNav {
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.lightTheme .navButton.active,
-.lightTheme .fontOption.active {
-  color: #333;
+.wordCount {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-size: 13px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  z-index: 100;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-.lightTheme .navDot {
-  color: #999;
+.wordCount:hover {
+  opacity: 1;
 }
 
-.darkTheme {
-  background-color: #1a1a1a;
-  color: #e0e0e0;
+.editor::selection {
+  background-color: rgba(100, 100, 255, 0.2);
 }
 
-.lightTheme .navButton {
-  color: #666666;
+.darkTheme .editor::selection {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-.lightTheme .navButton:hover {
-  color: #333333;
+.lightTheme .editor::selection {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
-.lightTheme .navButton.active {
-  color: #333333;
+.lightTheme .wordCount {
+  color: rgba(0, 0, 0, 0.5);
 }
 
-.lightTheme .navDot {
-  color: #666666;
+.darkTheme .wordCount {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 600px) {
+  .editor {
+    padding: 2rem;
+    font-size: 16px;
+  }
+
+  .bottomNav {
+    bottom: 1rem;
+    font-size: 12px;
+    gap: 0.8rem;
+  }
+
+  .leftControls, .rightControls {
+    gap: 1rem;
+  }
+
+  .navButton, .fontOption {
+    padding: 0.25rem 0.4rem;
+  }
 } 
