@@ -1,0 +1,134 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.dialog {
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+.input {
+  all: unset;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.presets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.preset {
+  all: unset;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.preset:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.button {
+  all: unset;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  flex: 1;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.button.primary {
+  background: rgba(100, 100, 255, 0.3);
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.button.primary:hover {
+  background: rgba(100, 100, 255, 0.4);
+}
+
+/* Light theme */
+.light .dialog {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.light .title {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.light .input,
+.light .preset,
+.light .button {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.light .button.primary {
+  background: rgba(100, 100, 255, 0.2);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.light .input::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.light .preset:hover,
+.light .button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.light .button.primary:hover {
+  background: rgba(100, 100, 255, 0.3);
+} 
