@@ -1,35 +1,61 @@
 {
-  "$schema": "https://schema.tauri.app/config/2",
-  "productName": "cleantype",
-  "version": "0.1.0",
-  "identifier": "com.cleantype.app",
+  "$schema": "../../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeDevCommand": "npm run dev",
-    "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "npm run build",
-    "frontendDist": "../dist"
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": true
   },
-  "app": {
-    "windows": [
-      {
-        "title": "cleantype",
-        "width": 800,
-        "height": 600
+  "package": {
+    "productName": "CleanType",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "fs": {
+        "all": true,
+        "scope": ["**"]
+      },
+      "path": {
+        "all": true
+      },
+      "dialog": {
+        "all": true
+      },
+      "clipboard": {
+        "all": true
+      },
+      "window": {
+        "all": true
       }
-    ],
+    },
+    "bundle": {
+      "active": true,
+      "targets": ["msi", "nsis"],
+      "identifier": "com.cleantype.app",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    },
     "security": {
       "csp": null
-    }
-  },
-  "bundle": {
-    "active": true,
-    "targets": "all",
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.icns",
-      "icons/icon.ico"
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 800,
+        "resizable": true,
+        "title": "CleanType",
+        "width": 1200,
+        "minWidth": 800,
+        "minHeight": 600
+      }
     ]
   }
 }

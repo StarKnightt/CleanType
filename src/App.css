@@ -7,7 +7,7 @@
 }
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 26px;
   line-height: 24px;
   font-weight: 400;
 
@@ -19,6 +19,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --toastify-color-dark: #2a2a2a;
+  --toastify-color-light: #ffffff;
+  --toastify-text-color-dark: #ffffff;
+  --toastify-text-color-light: #333333;
+  --toastify-font-family: inherit;
 }
 
 .container {
@@ -113,4 +119,48 @@ button {
   button:active {
     background-color: #0f0f0f69;
   }
+}
+
+/* Toast styling */
+.Toastify__toast {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 14px !important;
+  padding: 12px 16px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  max-width: 360px !important;
+  margin: 0 auto !important;
+}
+
+.Toastify__toast--dark {
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.Toastify__toast--light {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  color: rgba(0, 0, 0, 0.85) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.Toastify__toast-body {
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.Toastify__close-button {
+  opacity: 0.5 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1 !important;
+}
+
+.Toastify__progress-bar {
+  height: 3px !important;
 }
