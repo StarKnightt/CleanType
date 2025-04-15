@@ -1,59 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Timer.module.css';
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
+interface TimerProps {
   onStart: (minutes: number) => void;
-  isDarkTheme: boolean;
+  onPause: () => void;
+  onResume: () => void;
+  onReset: () => void;
+  timeLeft: number;
+  isRunning: boolean;
 }
 
-const Timer: React.FC<Props> = ({ isOpen, onClose, onStart, isDarkTheme }) => {
-  const [customTime, setCustomTime] = useState('15');
+const TIMER_PRESETS = [5, 15, 25, 30];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const mins = parseInt(customTime);
-    if (!isNaN(mins) && mins > 0) {
-      onStart(mins);
-    }
+export const Timer: React.FC<TimerProps> = ({ 
+  onStart,
+  onPause,
+  onResume,
+  onReset,
+  timeLeft,
+  isRunning
+}) => {
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
-
-  const handlePresetClick = (mins: number) => {
-    setCustomTime(mins.toString());
-    onStart(mins);
-  };
-
-  if (!isOpen) return null;
 
   return (
-    <div className={`${styles.overlay} ${isDarkTheme ? '' : styles.light}`}>
-      <div className={styles.dialog}>
-        <h2 className={styles.title}>Set Timer</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="number"
-            className={styles.input}
-            value={customTime}
-            onChange={(e) => setCustomTime(e.target.value)}
-            min="1"
-            max="120"
-            placeholder="Enter minutes..."
-          />
-          <div className={styles.presets}>
-            <button type="button" onClick={() => handlePresetClick(5)}>5m</button>
-            <button type="button" onClick={() => handlePresetClick(15)}>15m</button>
-            <button type="button" onClick={() => handlePresetClick(25)}>25m</button>
-            <button type="button" onClick={() => handlePresetClick(30)}>30m</button>
+    <div className={styles.timerContainer}>
+      {!isRunning ? (
+        <div className={styles.presetButtons}>
+          {TIMER_PRESETS.map((minutes) => (
+            <button
+              key={minutes}
+              onClick={() => onStart(minutes)}
+              className={styles.presetButton}
+            >
+              {minutes}m
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className={styles.activeTimer}>
+          <span className={styles.time}>{formatTime(timeLeft)}</span>
+          <div className={styles.controls}>
+            {isRunning ? (
+              <button onClick={onPause} className={styles.control}>⏸️</button>
+            ) : (
+              <button onClick={onResume} className={styles.control}>▶️</button>
+            )}
+            <button onClick={onReset} className={styles.control}>⏹️</button>
           </div>
-          <div className={styles.buttons}>
-            <button type="button" onClick={onClose}>Cancel</button>
-            <button type="submit" onClick={() => onStart(parseInt(customTime))}>Start</button>
-          </div>
-        </form>
-      </div>
+        </div>
+      )}
     </div>
   );
-};
-
-export default Timer; 
+}; 

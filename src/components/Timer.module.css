@@ -9,62 +9,240 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+}
+
+.overlay.light {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .dialog {
-  background: rgba(0, 0, 0, 0.9);
-  border-radius: 12px;
+  background: #1e1e1e;
+  border-radius: 8px;
   padding: 24px;
   min-width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.light .dialog {
+  background: #ffffff;
+  color: #1e1e1e;
+}
+
+.dialog h3 {
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.preset {
+  background: #2d2d2d;
+  border: none;
+  color: inherit;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.light .preset {
+  background: #f0f0f0;
+}
+
+.preset:hover {
+  background: #3d3d3d;
+}
+
+.light .preset:hover {
+  background: #e0e0e0;
+}
+
+.customTime {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.timerInput {
+  background: #2d2d2d;
+  border: 1px solid #3d3d3d;
+  color: inherit;
+  padding: 8px;
+  border-radius: 4px;
+  width: 80px;
+  font-size: 1rem;
+}
+
+.light .timerInput {
+  background: #f0f0f0;
+  border-color: #e0e0e0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.startButton, .cancelButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+
+.startButton {
+  background: #0078d4;
+  color: white;
+}
+
+.cancelButton {
+  background: transparent;
+  color: inherit;
+}
+
+.startButton:hover, .cancelButton:hover {
+  opacity: 0.8;
+}
+
+.timerButton {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 8px;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.timerButton:hover {
+  opacity: 0.8;
+}
+
+.timerPopup {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  min-width: 200px;
+}
+
+.light .timerPopup {
+  background: #ffffff;
+  color: #1e1e1e;
+}
+
+.timerDisplay {
+  font-size: 2rem;
+  font-weight: 500;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.timerControls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.timerControls button {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.timerControls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.light .timerControls button:hover {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .title {
-  margin: 0;
-  font-size: 20px;
+  margin: 0 0 20px 0;
+  font-size: 24px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
   text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .input {
   all: unset;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 12px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 24px;
   width: 100%;
-  box-sizing: border-box;
-}
-
-.input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
-}
-
-.presets {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.preset {
-  all: unset;
-  cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 12px 80px 12px 16px;
   background: rgba(255, 255, 255, 0.1);
-  font-size: 15px;
-  transition: all 0.2s ease;
+  border-radius: 8px;
+  font-size: 20px;
+  text-align: center;
+  transition: background-color 0.2s ease;
 }
 
-.preset:hover {
+.input:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.input:focus {
   background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+}
+
+.light .input {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.light .input:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.light .input:focus {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.inputLabel {
+  position: absolute;
+  right: 16px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  pointer-events: none;
+}
+
+.light .inputLabel {
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .buttons {
@@ -73,62 +251,295 @@
   margin-top: 8px;
 }
 
-.button {
+.timerContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timerButton.active {
+  opacity: 1;
+  color: #4a9eff;
+  background: rgba(74, 158, 255, 0.1);
+}
+
+.modifyButton,
+.resetButton {
   all: unset;
   cursor: pointer;
-  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
+  opacity: 0.7;
+  color: inherit;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.timerContainer:hover .modifyButton,
+.timerContainer:hover .resetButton {
+  opacity: 0.85;
+}
+
+.modifyButton:hover,
+.resetButton:hover {
+  opacity: 1 !important;
   background: rgba(255, 255, 255, 0.1);
+}
+
+.timerText {
+  min-width: 60px;
   text-align: center;
+}
+
+.timerDialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 20px;
+  width: 320px;
+  color: #fff;
+  z-index: 1100;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: dialogAppear 0.2s ease;
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.dialogHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
   flex: 1;
-  font-size: 15px;
+}
+
+.closeButton {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.6);
   transition: all 0.2s ease;
 }
 
-.button.primary {
-  background: rgba(100, 100, 255, 0.3);
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+.presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-.button.primary:hover {
-  background: rgba(100, 100, 255, 0.4);
+.presetButtons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.presetButton {
+  all: unset;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.presetButton:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.presetButton.active {
+  background: rgba(74, 158, 255, 0.2);
+  color: #4a9eff;
+}
+
+.customTime {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timeInputs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.timeInput {
+  all: unset;
+  width: 32px;
+  padding: 8px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  transition: all 0.2s ease;
+}
+
+.timeInput:focus {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.timeUnit {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancelButton,
+.startButton {
+  all: unset;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.cancelButton {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cancelButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.startButton {
+  background: rgba(74, 158, 255, 0.2);
+  color: #4a9eff;
+}
+
+.startButton:hover {
+  background: rgba(74, 158, 255, 0.3);
+}
+
+@keyframes dialogAppear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 /* Light theme */
-.light .dialog {
+[data-theme='light'] .timerDialog {
   background: rgba(255, 255, 255, 0.95);
+  color: #333;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.light .title {
-  color: rgba(0, 0, 0, 0.9);
+[data-theme='light'] .closeButton {
+  color: rgba(0, 0, 0, 0.5);
 }
 
-.light .input,
-.light .preset,
-.light .button {
+[data-theme='light'] .closeButton:hover {
   background: rgba(0, 0, 0, 0.05);
   color: rgba(0, 0, 0, 0.8);
 }
 
-.light .button.primary {
-  background: rgba(100, 100, 255, 0.2);
-  color: rgba(0, 0, 0, 0.9);
+[data-theme='light'] .presetButton {
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.light .input::placeholder {
-  color: rgba(0, 0, 0, 0.3);
+[data-theme='light'] .presetButton:hover {
+  background: rgba(0, 0, 0, 0.08);
 }
 
-.light .preset:hover,
-.light .button:hover {
-  background: rgba(0, 0, 0, 0.1);
+[data-theme='light'] .presetButton.active {
+  background: rgba(74, 158, 255, 0.1);
 }
 
-.light .button.primary:hover {
-  background: rgba(100, 100, 255, 0.3);
+[data-theme='light'] .timeInput {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .timeInput:focus {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='light'] .cancelButton {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .cancelButton:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='light'] .startButton {
+  background: rgba(74, 158, 255, 0.1);
+}
+
+.activeTimer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+  font-size: 15px;
+  min-width: 45px;
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.control {
+  all: unset;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
 } 

@@ -1,3 +1,6 @@
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Crimson+Pro:wght@400;600&family=IBM+Plex+Sans:wght@400;500&family=Space+Mono&family=Dancing+Script:wght@400;600&family=Great+Vibes&family=Playfair+Display:ital@0;1&family=Playpen+Sans:wght@400;600&display=swap');
+
 .container {
   position: fixed;
   top: 0;
@@ -10,41 +13,176 @@
   background-color: #ffffff;
 }
 
+.editorContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-color);
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
 .editor {
   width: 100%;
-  height: 100%;
-  background-color: transparent;
-  color: #333333;
+  max-width: 720px;
+  height: calc(100vh - 120px);
+  margin: 4rem auto 0;
+  padding: 2rem;
+  background: transparent;
   border: none;
   outline: none;
-  padding: 4rem;
   resize: none;
-  line-height: 1.5;
-  caret-color: #333333;
-  opacity: 1;
-  letter-spacing: 0;
-  overflow-y: auto;
-  tab-size: 2;
-  font-family: inherit;
-  font-size: 18px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-width: 700px;
-  margin: 0 auto;
+  line-height: 1.6;
+  color: var(--text-color);
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .bottomNav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  height: 60px;
+  padding: 0 2rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.7);
+  justify-content: space-between;
+  background: var(--nav-bg);
+  border-top: 1px solid var(--border-color);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  opacity: 0.85;
   transition: opacity 0.2s ease;
+}
+
+.bottomNav:hover {
+  opacity: 1;
+}
+
+.leftControls,
+.rightControls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.fontName,
+.fontSize,
+.timer,
+.themeToggle,
+.historyToggle,
+.navButton,
+.fontOption,
+.sizeButton {
+  all: unset;
+  cursor: pointer;
+  font-size: 15px;
+  color: inherit;
+  transition: opacity 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 80px;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.9;
+}
+
+.timer.active {
+  color: #4a9eff;
+  opacity: 1;
+}
+
+.darkTheme .bottomNav {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.lightTheme .bottomNav {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.fontInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.timerPopup {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 30, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  color: #fff;
+}
+
+.lightTheme .timerPopup {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.timerControls {
+  display: flex;
+  gap: 12px;
+}
+
+.timerButton {
+  all: unset;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.timerButton:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.lightTheme .timerButton {
+  background: rgba(0, 0, 0, 0.08);
+  color: #333;
+}
+
+.lightTheme .timerButton:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.timerDisplay {
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  min-width: 80px;
+  text-align: center;
+}
+
+.navDot {
+  color: #666;
+  opacity: 0.5;
+  user-select: none;
+  font-size: 15px;
 }
 
 .navButton,
@@ -148,18 +286,6 @@
   gap: 8px;
 }
 
-.timerButton {
-  all: unset;
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  text-align: center;
-  transition: background-color 0.2s ease;
-  flex: 1;
-  font-size: 14px;
-}
-
 .timerButton.primary {
   background: rgba(100, 100, 255, 0.3);
 }
@@ -207,12 +333,6 @@
   gap: 0.8rem;
 }
 
-.navDot {
-  color: #999;
-  opacity: 0.5;
-  user-select: none;
-}
-
 .navButton.active, .fontOption.active {
   opacity: 1;
 }
@@ -232,7 +352,7 @@
   border-radius: 4px;
   text-align: center;
   transition: background-color 0.2s ease;
-  font-size: 13px;
+  font-size: 15px;
   color: rgba(255, 255, 255, 0.8);
 }
 
@@ -246,13 +366,16 @@
   cursor: pointer;
   color: inherit;
   transition: opacity 0.2s ease;
-  font-size: 13px;
-  padding: 2px 4px;
+  font-size: 15px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  opacity: 0.7;
 }
 
 .fontOption:hover,
 .fontOption.active {
   opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Make sure light theme colors are properly inherited */
@@ -272,23 +395,150 @@
 
 /* Font styles */
 .font-lato {
-  font-family: 'Lato', system-ui, sans-serif;
+  font-family: 'IBM Plex Sans', Inter, system-ui, sans-serif !important;
+  letter-spacing: -0.01em;
 }
 
 .font-arial {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Space Mono', monospace !important;
 }
 
 .font-system {
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  letter-spacing: -0.02em;
 }
 
 .font-serif {
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-family: 'Crimson Pro', Georgia, serif !important;
+  font-size: 1.1em;
+}
+
+.font-script {
+  font-family: 'Dancing Script', cursive !important;
+  font-size: 1.4em;
+  line-height: 1.4;
+}
+
+.font-elegant {
+  font-family: 'Great Vibes', cursive !important;
+  font-size: 1.6em;
+  line-height: 1.6;
+}
+
+.font-classic {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.1em;
+  font-style: italic;
+}
+
+.font-playpen {
+  font-family: 'Playpen Sans', cursive !important;
+  font-size: 1.2em;
+  line-height: 1.4;
 }
 
 .font-random {
-  font-family: 'Comic Sans MS', cursive;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  letter-spacing: -0.01em;
+}
+
+/* Font dropdown styles */
+.fontDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.fontButton {
+  all: unset;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+  color: inherit;
+  transition: all 0.2s ease;
+  opacity: 0.85;
+}
+
+.fontButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
+.fontMenu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.fontDropdown:focus-within .fontMenu {
+  display: flex;
+}
+
+.fontDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}
+
+.fontCategory {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fontCategory + .fontCategory {
+  margin-top: 4px;
+}
+
+.fontOption {
+  all: unset;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0.85;
+}
+
+.fontOption:hover,
+.fontOption.active {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
+.fontPreview {
+  font-size: 14px;
+  opacity: 0.6;
+  font-family: inherit;
+}
+
+/* Light theme support */
+.lightTheme .fontMenu {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .fontButton:hover,
+.lightTheme .fontOption:hover,
+.lightTheme .fontOption.active {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* Theme styles */
@@ -325,13 +575,19 @@
 
 .wordCount {
   position: fixed;
-  top: 1.5rem;
-  left: 1.5rem;
-  font-size: 13px;
-  opacity: 0.7;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  opacity: 0.6;
   transition: opacity 0.2s ease;
   z-index: 100;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-color);
+  padding: 6px 14px;
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+  margin-bottom: 2rem;
 }
 
 .wordCount:hover {
@@ -358,23 +614,60 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-@media (max-width: 600px) {
+/* Tablet and smaller desktop */
+@media (max-width: 768px) {
   .editor {
-    padding: 2rem;
+    padding: 1.5rem;
+    height: calc(100vh - 100px);
+  }
+  
+  .editorContainer {
+    padding: 0 1rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .editor {
+    padding: 1rem;
     font-size: 16px;
+    height: calc(100vh - 80px);
   }
 
   .bottomNav {
-    bottom: 1rem;
-    font-size: 12px;
-    gap: 0.8rem;
+    height: 50px;
+    padding: 0 1rem;
   }
 
-  .leftControls, .rightControls {
-    gap: 1rem;
+  .bottomNav button {
+    padding: 0.5rem;
+    font-size: 13px;
   }
+}
 
-  .navButton, .fontOption {
-    padding: 0.25rem 0.4rem;
-  }
+.saveButton {
+  all: unset;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 15px;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.saveButton:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.saveButton.hasChanges {
+  color: #4a9eff;
+  opacity: 1;
+}
+
+.lightTheme .saveButton.hasChanges {
+  color: #0066cc;
 } 
