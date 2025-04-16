@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanType - A Modern Text Editor</title>
+    <style>
+        :root {
+            --primary: #4a9eff;
+            --bg: #1a1a1a;
+            --text: #ffffff;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 4rem 0;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), #8cc8ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: transform 0.2s;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        
+        .download-section {
+            text-align: center;
+            margin: 4rem 0;
+            padding: 4rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .download-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .download-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 158, 255, 0.2);
+        }
+        
+        .download-button.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @supports not (backdrop-filter: blur(10px)) {
+            .feature,
+            .download-section,
+            .download-button.secondary {
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CleanType</h1>
+            <p class="subtitle">A clean, modern text editor for distraction-free writing</p>
+        </header>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🎨 Beautiful Interface</h3>
+                <p>Clean and modern design that lets you focus on what matters most - your writing.</p>
+            </div>
+            <div class="feature">
+                <h3>⚡ Fast & Lightweight</h3>
+                <p>Built with Tauri, ensuring minimal resource usage and lightning-fast performance.</p>
+            </div>
+            <div class="feature">
+                <h3>🎯 Distraction-Free</h3>
+                <p>Immersive writing experience with customizable fonts and themes.</p>
+            </div>
+            <div class="feature">
+                <h3>⏱️ Focus Timer</h3>
+                <p>Built-in timer to help you stay focused during writing sessions.</p>
+            </div>
+            <div class="feature">
+                <h3>💾 Auto-Save</h3>
+                <p>Never lose your work with automatic saving and version history.</p>
+            </div>
+            <div class="feature">
+                <h3>🌙 Dark Mode</h3>
+                <p>Easy on the eyes with both light and dark themes.</p>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h2>Download CleanType</h2>
+            <p>Available for Windows 10/11</p>
+            <div class="download-buttons">
+                <a href="./downloads/CleanType_0.1.0_x64_en-US.msi" class="download-button">Download MSI Installer</a>
+                <a href="./downloads/CleanType_0.1.0_x64-setup.exe" class="download-button secondary">Download EXE Installer</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 CleanType. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html> 

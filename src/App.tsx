@@ -1,10 +1,13 @@
 import { FullscreenEditor } from "./components/FullscreenEditor";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 function App() {
   return (
-    <div className="App">
-      <FullscreenEditor />
-    </div>
+    <ErrorBoundary>
+      <div className="App">
+        <FullscreenEditor />
+      </div>
+    </ErrorBoundary>
   );
 }
 
