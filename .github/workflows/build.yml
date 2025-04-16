@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "test", "master" ]
   pull_request:
     branches: [ "master" ]
 
@@ -14,18 +14,22 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
+        cache: 'npm'
         
     - name: Install Rust stable
       uses: dtolnay/rust-toolchain@stable
       
+    - name: Cache Rust dependencies
+      uses: Swatinem/rust-cache@v2
+      
     - name: Install dependencies
-      run: npm install
+      run: npm ci
       
     - name: Install Tauri CLI
       run: cargo install tauri-cli
@@ -34,13 +38,19 @@ jobs:
       run: npm run tauri build
       
     - name: Upload MSI artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/test'
       with:
-        name: CleanType-msi
+        name: CleanType-msi-${{ github.ref_name }}
         path: src-tauri/target/release/bundle/msi/*.msi
+        compression-level: 9
+        retention-days: ${{ github.ref == 'refs/heads/master' && 90 || 7 }}
         
     - name: Upload NSIS artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/test'
       with:
-        name: CleanType-setup
-        path: src-tauri/target/release/bundle/nsis/*.exe 
+        name: CleanType-setup-${{ github.ref_name }}
+        path: src-tauri/target/release/bundle/nsis/*.exe
+        compression-level: 9
+        retention-days: ${{ github.ref == 'refs/heads/master' && 90 || 7 }} 
