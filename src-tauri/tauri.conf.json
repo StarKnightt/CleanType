@@ -1,5 +1,5 @@
 {
-  "$schema": "../../node_modules/@tauri-apps/cli/schema.json",
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
@@ -41,7 +41,34 @@
         "icons/128x128@2x.png",
         "icons/icon.icns",
         "icons/icon.ico"
-      ]
+      ],
+      "resources": [],
+      "externalBin": [],
+      "copyright": "",
+      "category": "Utility",
+      "shortDescription": "A modern text editor",
+      "longDescription": "A clean, modern text editor for distraction-free writing",
+      "deb": {
+        "depends": []
+      },
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": "",
+        "exceptionDomain": "",
+        "signingIdentity": null,
+        "entitlements": null
+      },
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": "",
+        "webviewInstallMode": {
+          "type": "downloadBootstrapper"
+        },
+        "wix": {
+          "language": "en-US"
+        }
+      }
     },
     "security": {
       "csp": null
@@ -54,7 +81,15 @@
         "title": "CleanType",
         "width": 1200,
         "minWidth": 800,
-        "minHeight": 600
+        "minHeight": 600,
+        "decorations": true,
+        "transparent": false,
+        "visible": false,
+        "center": true,
+        "focus": true,
+        "skipTaskbar": false,
+        "alwaysOnTop": false,
+        "theme": "Dark"
       }
     ]
   }
