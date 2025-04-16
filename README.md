@@ -1,6 +1,6 @@
 # CleanType
 
-![Build Status](https://github.com/yourusername/cleantype/actions/workflows/build.yml/badge.svg)
+![Build Status](https://github.com/StarKnightt/cleantype/actions/workflows/build.yml/badge.svg)
 
 A modern, efficient text cleaning tool built with Tauri and React. CleanType helps you clean and format text with just a few clicks.
 
