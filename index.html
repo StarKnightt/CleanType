@@ -37,7 +37,9 @@
             font-weight: 700;
             margin-bottom: 1rem;
             background: linear-gradient(135deg, #2563eb, #4f46e5);
+            background-clip: text;
             -webkit-background-clip: text;
+            color: transparent;
             -webkit-text-fill-color: transparent;
         }
 
@@ -62,8 +64,12 @@
 
         .download-button {
             display: inline-flex;
+            flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.25rem;
+        }
+
+        .download-button.primary {
             background: #2563eb;
             color: white;
             padding: 1rem 2rem;
@@ -73,7 +79,7 @@
             transition: all 0.2s ease;
         }
 
-        .download-button:hover {
+        .download-button.primary:hover {
             background: #1d4ed8;
             transform: translateY(-1px);
         }
@@ -145,6 +151,26 @@
             color: #6b7280;
             margin-top: 0.5rem;
         }
+
+        .download-note {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .alt-link {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .alt-link:hover {
+            text-decoration: underline;
+        }
+
+        .button-note {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -154,13 +180,15 @@
             <p class="subtitle">A modern, distraction-free text editor for focused writing</p>
             <div class="download-section">
                 <div class="download-options">
-                    <a href="https://github.com/StarKnightt/cleantype/releases/download/v0.1.0/CleanType_0.1.0_x64.msi" class="download-button">
-                        Download MSI
-                    </a>
-                    <a href="https://github.com/StarKnightt/cleantype/releases/download/v0.1.0/CleanType_0.1.0_x64-setup.exe" class="download-button secondary">
-                        Download EXE
+                    <a href="https://github.com/StarKnightt/cleantype/releases/download/v0.1.0/CleanType_0.1.0_x64-setup.exe" 
+                       class="download-button primary">
+                        Download CleanType
+                        <span class="button-note">Windows Installer (Recommended)</span>
                     </a>
                 </div>
+                <p class="download-note">
+                    Prefer MSI? <a href="https://github.com/StarKnightt/cleantype/releases/latest" class="alt-link">Download from GitHub Releases</a>
+                </p>
                 <p class="version">Version 0.1.0</p>
             </div>
         </div>
@@ -178,4 +206,8 @@
                 <h3>🎨 Customizable</h3>
                 <p>Choose from various fonts, themes, and layouts to match your writing style.</p>
             </div>
+        </div>
+    </div>
+</body>
+</html>
             
