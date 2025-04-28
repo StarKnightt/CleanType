@@ -1,0 +1,36 @@
+.app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.15s ease;
+}
+
+.darkTheme {
+  background-color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.9);
+  --bg-color: #1a1a1a;
+  --text-color: rgba(255, 255, 255, 0.9);
+  --nav-bg: rgba(0, 0, 0, 0.85);
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+.lightTheme {
+  background-color: rgb(255, 252, 242);
+  color: rgba(0, 0, 0, 0.9);
+  --bg-color: rgb(255, 252, 242);
+  --text-color: rgba(0, 0, 0, 0.9);
+  --nav-bg: rgba(255, 252, 242, 0.95);
+  --border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .app {
+    padding: 0;
+  }
+} 

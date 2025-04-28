@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   z-index: 1000;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .header {
@@ -21,6 +21,12 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.headerButtons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .header h2 {
   margin: 0;
   font-size: 18px;
@@ -28,7 +34,7 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-.closeButton {
+.closeButton, .newButton {
   width: 28px;
   height: 28px;
   border-radius: 6px;
@@ -40,17 +46,26 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  font-size: 20px;
 }
 
-.closeButton:hover {
+.closeButton:hover, .newButton:hover {
   background: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.9);
 }
 
+.newButton {
+  font-size: 24px;
+  font-weight: 400;
+}
+
 .searchContainer {
-  position: relative;
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .searchIcon {
@@ -63,20 +78,21 @@
 }
 
 .searchInput {
-  width: 100%;
-  padding: 10px 12px 10px 36px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 1;
   background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: inherit;
   font-size: 14px;
+  font-family: inherit;
   transition: all 0.2s ease;
 }
 
 .searchInput:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .searchInput::placeholder {
@@ -113,6 +129,7 @@
   margin-bottom: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
+  border: 1px solid transparent;
 }
 
 .entryItem:hover {
@@ -156,6 +173,7 @@
   color: rgba(255, 255, 255, 0.9);
   font-size: 15px;
   font-weight: 500;
+  font-family: inherit;
 }
 
 .titleInput:focus {
@@ -187,9 +205,6 @@
 }
 
 .entryDate {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.4);
 }
@@ -203,19 +218,29 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-family: inherit;
 }
 
 .entryFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 8px;
+}
+
+.entryMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wordCount {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .deleteButton {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: 4px;
   border: none;
   background: transparent;
@@ -226,7 +251,7 @@
 }
 
 .deleteButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 0, 0, 0.1);
   color: #ff4d4d;
 }
 
@@ -241,22 +266,18 @@
 
 .clearAllButton {
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px;
+  padding: 8px;
   border-radius: 6px;
   border: none;
   background: rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .clearAllButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 0, 0, 0.1);
   color: #ff4d4d;
 }
 
@@ -267,6 +288,107 @@
   font-size: 14px;
 }
 
+/* Light theme styles */
+.lightTheme {
+  background: rgba(255, 252, 242, 0.95);
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .header h2 {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.lightTheme .closeButton, .lightTheme .newButton {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.lightTheme .closeButton:hover, .lightTheme .newButton:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.lightTheme .searchContainer {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.lightTheme .searchInput {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .searchInput:focus {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.lightTheme .searchInput::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.lightTheme .entryItem {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.lightTheme .entryItem:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.lightTheme .entryItem.active {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .entryTitle {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.lightTheme .entryDate {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.lightTheme .entryPreview {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.lightTheme .wordCount {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.lightTheme .deleteButton {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.lightTheme .deleteButton:hover {
+  background: rgba(255, 0, 0, 0.05);
+  color: #ff4d4d;
+}
+
+.lightTheme .clearAllButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.lightTheme .clearAllButton:hover {
+  background: rgba(255, 0, 0, 0.05);
+  color: #ff4d4d;
+}
+
+.lightTheme .emptyState {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.lightTheme .titleInput {
+  border-color: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.lightTheme .titleInput:focus {
+  border-color: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Mobile styles */
 @media (max-width: 768px) {
   .panel {
     width: 100%;
@@ -281,41 +403,23 @@
   }
 }
 
-/* Remove all light theme styles since we're keeping it dark */
-[data-theme='light'] .panel,
-[data-theme='light'] .header,
-[data-theme='light'] .header h2,
-[data-theme='light'] .closeButton,
-[data-theme='light'] .searchIcon,
-[data-theme='light'] .searchInput,
-[data-theme='light'] .entryItem,
-[data-theme='light'] .entryTitle,
-[data-theme='light'] .editButton,
-[data-theme='light'] .entryDate,
-[data-theme='light'] .entryPreview,
-[data-theme='light'] .chevron,
-[data-theme='light'] .footer,
-[data-theme='light'] .titleInput {
-  /* Keep dark theme styles */
-  background: rgba(0, 0, 0, 0.85);
-  color: rgba(255, 255, 255, 0.9);
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: 100%;
 }
 
-[data-theme='light'] .searchInput,
-[data-theme='light'] .titleInput {
-  background: rgba(255, 255, 255, 0.1);
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 14px;
 }
 
-[data-theme='light'] .entryItem {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.03);
-}
-
-[data-theme='light'] .entryItem:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-[data-theme='light'] .entryItem.active {
-  background: rgba(100, 100, 255, 0.08);
-  border-color: rgba(100, 100, 255, 0.2);
+.darkTheme .emptyState {
+  color: rgba(255, 255, 255, 0.5);
 }
