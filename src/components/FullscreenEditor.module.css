@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: #ffffff;
+  background-color: var(--bg-color);
 }
 
 .editorContainer {
@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-color);
-  transition: background-color 0.3s ease;
+  transition: all 0.15s ease;
   overflow: hidden;
 }
 
@@ -51,8 +51,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--nav-bg);
-  border-top: 1px solid var(--border-color);
+  background: transparent;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   opacity: 0.85;
   transition: opacity 0.2s ease;
@@ -86,6 +85,100 @@
   border-radius: 4px;
 }
 
+.navDot {
+  color: #666;
+  opacity: 0.5;
+  user-select: none;
+  font-size: 15px;
+  margin: 0 2px;
+}
+
+.fontButton,
+.saveButton {
+  all: unset;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 15px;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+}
+
+.fontButton:hover,
+.sizeButton:hover,
+.historyToggle:hover,
+.themeToggle:hover,
+.saveButton:hover {
+  opacity: 1;
+}
+
+.darkTheme {
+  background-color: #1a1a1a;
+}
+
+.lightTheme {
+  background-color: rgb(255, 252, 242);
+}
+
+.darkTheme .editor {
+  color: rgba(255, 255, 255, 0.9);
+  caret-color: rgba(255, 255, 255, 0.9);
+}
+
+.darkTheme .bottomNav {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.lightTheme .editor {
+  background: rgba(255, 252, 242, 0.95);
+  color: #333;
+  caret-color: #333;
+}
+
+.lightTheme .bottomNav {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.topControls {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+}
+
+.wordCount {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  padding: 6px 14px;
+  border-radius: 6px;
+  margin: 0;
+  z-index: 10;
+  background: transparent;
+  pointer-events: none;
+}
+
+.darkTheme .wordCount {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.lightTheme .wordCount {
+  color: rgba(0, 0, 0, 0.85);
+}
+
 .timer {
   display: flex;
   align-items: center;
@@ -99,14 +192,6 @@
 .timer.active {
   color: #4a9eff;
   opacity: 1;
-}
-
-.darkTheme .bottomNav {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.lightTheme .bottomNav {
-  color: rgba(0, 0, 0, 0.85);
 }
 
 .fontInfo {
@@ -178,16 +263,8 @@
   text-align: center;
 }
 
-.navDot {
-  color: #666;
-  opacity: 0.5;
-  user-select: none;
-  font-size: 15px;
-}
-
 .navButton,
-.fontOption,
-.sizeButton {
+.fontOption {
   all: unset;
   cursor: pointer;
   padding: 4px 8px;
@@ -196,9 +273,9 @@
 }
 
 .navButton:hover,
-.fontOption:hover,
-.sizeButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+.fontOption:hover {
+  background: transparent;
+  opacity: 1;
 }
 
 .sizeWrapper {
@@ -463,7 +540,7 @@
 }
 
 .fontButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
   opacity: 1;
 }
 
@@ -547,7 +624,7 @@
 }
 
 .lightTheme {
-  background-color: #ffffff;
+  background-color: rgb(255, 252, 242);
 }
 
 .lightTheme .editor {
@@ -573,45 +650,46 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-.wordCount {
+.newEntryButton {
   position: fixed;
   top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
-  z-index: 100;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--bg-color);
-  padding: 6px 14px;
-  border-radius: 6px;
-  backdrop-filter: blur(8px);
-  margin-bottom: 2rem;
+  right: 2rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  z-index: 10;
 }
 
-.wordCount:hover {
+.newEntryButton:hover {
   opacity: 1;
+  transform: translateY(-1px);
 }
 
-.editor::selection {
-  background-color: rgba(100, 100, 255, 0.2);
+.darkTheme .newEntryButton {
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.darkTheme .editor::selection {
-  background-color: rgba(255, 255, 255, 0.2);
+.lightTheme .newEntryButton {
+  color: rgba(0, 0, 0, 0.9);
 }
 
-.lightTheme .editor::selection {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.lightTheme .wordCount {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.darkTheme .wordCount {
-  color: rgba(255, 255, 255, 0.6);
+/* Remove the old wordCount positioning */
+.wordCount {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  margin-bottom: 0;
 }
 
 /* Tablet and smaller desktop */
@@ -659,8 +737,8 @@
 }
 
 .saveButton:hover {
+  background: transparent;
   opacity: 1;
-  background: rgba(255, 255, 255, 0.1);
 }
 
 .saveButton.hasChanges {
@@ -670,4 +748,281 @@
 
 .lightTheme .saveButton.hasChanges {
   color: #0066cc;
+}
+
+.historyToggle {
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.historyToggle:hover {
+  opacity: 1;
+}
+
+.historyToggle.active {
+  opacity: 1;
+}
+
+.darkTheme .historyToggle {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.lightTheme .historyToggle {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.timerPopup button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.timerPopup button:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.timerPopup input {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: inherit;
+  padding: 4px 8px;
+  border-radius: 4px;
+  width: 60px;
+  font-size: 14px;
+}
+
+.timerPopup input:focus {
+  outline: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.timerPopup .startButton {
+  background: #4a9eff;
+  opacity: 1;
+}
+
+.timerPopup .startButton:hover {
+  background: #3b8be6;
+}
+
+.historyPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100vh;
+  background: var(--bg);
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1000;
+  animation: slideIn 0.2s ease;
+}
+
+.darkTheme .historyPanel {
+  background: #1a1a1a;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.lightTheme .historyPanel {
+  background: #fff;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.historyTitle {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+.historyList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.historyEntry {
+  padding: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.darkTheme .historyEntry {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.darkTheme .historyEntry:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lightTheme .historyEntry {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.lightTheme .historyEntry:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.historyEntry.current {
+  border: 1px solid var(--accent-color);
+}
+
+.entryPreview {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.entryMeta {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  display: flex;
+  justify-content: space-between;
+}
+
+.historyActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.historyAction {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: opacity 0.2s ease;
+  background: transparent;
+}
+
+.darkTheme .historyAction {
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.lightTheme .historyAction {
+  color: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.historyAction:hover {
+  opacity: 0.8;
+}
+
+.deleteButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.deleteButton:hover {
+  opacity: 0.8;
+}
+
+.timerWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.timerWrapper :global(.timerContainer) {
+  min-width: 120px;
+}
+
+.timerWrapper :global(.presetButtons) {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: var(--nav-bg);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+}
+
+.timerWrapper :global(.customInput) {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: var(--nav-bg);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 200px;
+}
+
+.timerWrapper :global(.customTimeInput) {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.timerWrapper :global(.customButtons) {
+  display: flex;
+  gap: 8px;
+}
+
+.timerWrapper :global(.customSubmit),
+.timerWrapper :global(.customCancel) {
+  flex: 1;
 } 

@@ -3,14 +3,17 @@ import styles from './FullscreenEditor.module.css';
 import { toast, Toaster } from 'react-hot-toast';
 import { Timer } from './Timer';
 import { appWindow } from '@tauri-apps/api/window';
-import { save } from '@tauri-apps/api/dialog';
-import { writeTextFile } from '@tauri-apps/api/fs';
+import { HistoryPanel } from './HistoryPanel';
+
+interface FullscreenEditorProps {
+  isDarkTheme: boolean;
+  onThemeToggle: () => void;
+}
 
 const STORAGE_KEY = 'freewrite-content';
 const FONT_STORAGE_KEY = 'freewrite-font';
 const SIZE_STORAGE_KEY = 'freewrite-size';
 const ENTRIES_KEY = 'freewrite-entries';
-const THEME_KEY = 'freewrite-theme';
 
 interface Entry {
   id: string;
@@ -46,7 +49,7 @@ const FONT_CATEGORIES = {
   special: ['random'] as FontStyle[]
 };
 
-export const FullscreenEditor: React.FC = () => {
+export const FullscreenEditor: React.FC<FullscreenEditorProps> = ({ isDarkTheme, onThemeToggle }) => {
   const [content, setContent] = useState(() => {
     return localStorage.getItem(STORAGE_KEY) || '';
   });
@@ -69,9 +72,6 @@ export const FullscreenEditor: React.FC = () => {
   });
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(() => {
-    return localStorage.getItem(THEME_KEY) !== 'light';
-  });
 
   const [entries, setEntries] = useState<Entry[]>(() => {
     return JSON.parse(localStorage.getItem(ENTRIES_KEY) || '[]');
@@ -88,12 +88,13 @@ export const FullscreenEditor: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [wordCount, setWordCount] = useState(0);
-  const [timeLeft, setTimeLeft] = useState<number>(15 * 60);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [showTimerPopup, setShowTimerPopup] = useState(false);
 
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const [redoStack, setRedoStack] = useState<string[]>([]);
+
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   // Load entries when component mounts
   useEffect(() => {
@@ -137,36 +138,35 @@ export const FullscreenEditor: React.FC = () => {
   }, [content, currentEntry]);
 
   // Manual save with notification (Ctrl + S)
-  const saveCurrentEntry = async () => {
+  const handleSave = async () => {
     if (currentEntry && content.trim()) {
-      const updatedEntry: Entry = {
-        ...currentEntry,
-        content,
-        updatedAt: new Date().toISOString(),
-        font: currentFont,
-        fontSize: fontSize,
-        theme: isDarkTheme ? 'dark' : 'light' as Theme
-      };
-      
-      const newEntries = [...entries];
-      const index = newEntries.findIndex(e => e.id === currentEntry.id);
-      if (index >= 0) {
-        newEntries[index] = updatedEntry;
-      } else {
-        newEntries.push(updatedEntry);
+      try {
+        const updatedEntry: Entry = {
+          ...currentEntry,
+          content,
+          updatedAt: new Date().toISOString(),
+          font: currentFont,
+          fontSize: fontSize,
+          theme: isDarkTheme ? 'dark' : 'light'
+        };
+        
+        const newEntries = entries.filter(e => e.id !== currentEntry.id);
+        newEntries.unshift(updatedEntry);
+        setEntries(newEntries);
+        localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
+        setHasUnsavedChanges(false);
+        
+        toast.success('Saved to history', {
+          duration: 2000,
+          style: {
+            background: isDarkTheme ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.95)',
+            color: isDarkTheme ? '#fff' : '#333',
+          }
+        });
+      } catch (error) {
+        console.error('Failed to save:', error);
+        toast.error('Failed to save to history');
       }
-      setEntries(newEntries);
-      localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
-      localStorage.setItem(STORAGE_KEY, content);
-      setHasUnsavedChanges(false);
-      toast.success('Saved to history', {
-        duration: 2000,
-        icon: '💾',
-        style: {
-          background: isDarkTheme ? 'rgba(0, 0, 0, 0.85)' : '#ffffff',
-          color: isDarkTheme ? '#fff' : '#333',
-        }
-      });
     }
   };
 
@@ -215,57 +215,42 @@ export const FullscreenEditor: React.FC = () => {
   };
 
   const toggleTheme = () => {
-    setIsDarkTheme(prev => {
-      const newTheme = !prev;
-      localStorage.setItem(THEME_KEY, newTheme ? 'dark' : 'light');
-      return newTheme;
-    });
+    onThemeToggle();
   };
 
   const createNewEntry = () => {
-    const createEntry = () => {
-      const newEntry: Entry = {
-        id: Date.now().toString(),
-        content: '',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        title: 'Untitled',
-        font: currentFont,
-        fontSize: fontSize,
-        theme: isDarkTheme ? 'dark' : 'light'
-      };
-      setCurrentEntry(newEntry);
-      setContent('');
-      setHasUnsavedChanges(false);
-      
-      // Save the new entry immediately
-      const newEntries = [...entries, newEntry];
-      setEntries(newEntries);
-      localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
-      
-      toast.success('New entry created');
+    const newEntry: Entry = {
+      id: Date.now().toString(),
+      content: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      title: 'Untitled',
+      font: currentFont,
+      fontSize: fontSize,
+      theme: isDarkTheme ? 'dark' : 'light'
     };
-
-    if (hasUnsavedChanges && content.trim()) {
-      const shouldSave = window.confirm(
-        'You have unsaved changes. Would you like to save before creating a new entry?'
-      );
-      
-      if (shouldSave) {
-        saveCurrentEntry().then(createEntry);
-      } else {
-        createEntry();
+    
+    setCurrentEntry(newEntry);
+    setContent('');
+    setHasUnsavedChanges(false);
+    
+    const newEntries = [newEntry, ...entries];
+    setEntries(newEntries);
+    localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
+    toast.success('New entry created', {
+      duration: 2000,
+      style: {
+        background: isDarkTheme ? 'rgba(0, 0, 0, 0.85)' : '#ffffff',
+        color: isDarkTheme ? '#fff' : '#333',
       }
-    } else {
-      createEntry();
-    }
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Save (Ctrl + S)
+    // Save to history (Ctrl + S)
     if ((e.metaKey || e.ctrlKey) && e.key === 's') {
       e.preventDefault();
-      saveCurrentEntry();
+      handleSave();
       return;
     }
 
@@ -435,24 +420,25 @@ export const FullscreenEditor: React.FC = () => {
   const startTimer = (minutes: number) => {
     setTimeLeft(minutes * 60);
     setIsTimerActive(true);
-    setShowTimerPopup(false);
     toast.success(`Timer started: ${minutes} minutes`);
   };
 
   const pauseTimer = () => {
     setIsTimerActive(false);
-    setShowTimerPopup(false);
+    toast.success('Timer paused');
   };
 
   const resumeTimer = () => {
-    setIsTimerActive(true);
-    setShowTimerPopup(false);
+    if (timeLeft > 0) {
+      setIsTimerActive(true);
+      toast.success('Timer resumed');
+    }
   };
 
   const resetTimer = () => {
-    setTimeLeft(15 * 60);
+    setTimeLeft(0);
     setIsTimerActive(false);
-    setShowTimerPopup(false);
+    toast.success('Timer reset');
   };
 
   // Random font button
@@ -466,41 +452,41 @@ export const FullscreenEditor: React.FC = () => {
     setCurrentFont(fonts[newIndex]);
   };
 
-  // Add save functionality
-  const handleSave = async () => {
-    try {
-      // First, show the save dialog to get the file path
-      const filePath = await save({
-        filters: [{
-          name: 'Text',
-          extensions: ['txt']
-        }]
-      });
-
-      if (filePath) {
-        // Save the content to the selected file
-        await writeTextFile(filePath, content);
-        setHasUnsavedChanges(false);
-        toast.success('File saved successfully');
-      }
-    } catch (error) {
-      console.error('Failed to save:', error);
-      toast.error('Failed to save file');
-    }
+  const handleHistoryToggle = () => {
+    setIsHistoryOpen(prev => !prev);
   };
 
-  // Add prompt before closing
+  // Auto-save effect
   useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (hasUnsavedChanges) {
-        e.preventDefault();
-        e.returnValue = '';
+    const saveTimeout = setTimeout(() => {
+      if (currentEntry && content.trim()) {
+        const updatedEntry: Entry = {
+          ...currentEntry,
+          content,
+          updatedAt: new Date().toISOString(),
+          font: currentFont,
+          fontSize: fontSize,
+          theme: isDarkTheme ? 'dark' : 'light'
+        };
+        
+        const newEntries = entries.filter(e => e.id !== currentEntry.id);
+        newEntries.unshift(updatedEntry);
+        setEntries(newEntries);
+        localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
+        localStorage.setItem(STORAGE_KEY, content);
+        setHasUnsavedChanges(false);
       }
-    };
+    }, 300); // Even faster auto-save
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [hasUnsavedChanges]);
+    return () => clearTimeout(saveTimeout);
+  }, [content, currentEntry, currentFont, fontSize, isDarkTheme]);
+
+  // Simplified content change handler
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newContent = e.target.value;
+    setContent(newContent);
+    setHasUnsavedChanges(true);
+  };
 
   return (
     <div className={`${styles.editorContainer} ${isDarkTheme ? styles.darkTheme : styles.lightTheme}`}>
@@ -517,14 +503,18 @@ export const FullscreenEditor: React.FC = () => {
       <div className={styles.wordCount}>
         {wordCount} {wordCount === 1 ? 'word' : 'words'}
       </div>
+      <button
+        className={styles.newEntryButton}
+        onClick={createNewEntry}
+        title="Create new entry"
+      >
+        +
+      </button>
       <textarea
         ref={textareaRef}
         className={`${styles.editor} ${styles[`font-${currentFont}`]}`}
         value={content}
-        onChange={(e) => {
-          setContent(e.target.value);
-          setHasUnsavedChanges(true);
-        }}
+        onChange={handleContentChange}
         onKeyDown={handleKeyDown}
         onSelect={handleSelect}
         onWheel={handleWheel}
@@ -598,14 +588,23 @@ export const FullscreenEditor: React.FC = () => {
         </div>
 
         <div className={styles.rightControls}>
-          <Timer 
-            onStart={startTimer}
-            onPause={pauseTimer}
-            onResume={resumeTimer}
-            onReset={resetTimer}
-            timeLeft={timeLeft}
-            isRunning={isTimerActive}
-          />
+          <div className={styles.timerWrapper}>
+            <Timer 
+              onStart={startTimer}
+              onPause={pauseTimer}
+              onResume={resumeTimer}
+              onReset={resetTimer}
+              timeLeft={timeLeft}
+              isRunning={isTimerActive}
+            />
+          </div>
+          <span className={styles.navDot}>•</span>
+          <button
+            className={`${styles.historyToggle} ${isHistoryOpen ? styles.active : ''}`}
+            onClick={handleHistoryToggle}
+          >
+            History
+          </button>
           <span className={styles.navDot}>•</span>
           <button
             className={styles.themeToggle}
@@ -617,33 +616,44 @@ export const FullscreenEditor: React.FC = () => {
           <button
             className={`${styles.saveButton} ${hasUnsavedChanges ? styles.hasChanges : ''}`}
             onClick={handleSave}
+            title="Save to history (Ctrl + S)"
           >
             Save
           </button>
         </div>
       </div>
 
-      {showTimerPopup && timeLeft > 0 && (
-        <div className={`${styles.timerPopup} ${isDarkTheme ? '' : styles.lightTheme}`}>
-          <div className={styles.timerDisplay}>
-            {Math.floor(timeLeft / 60).toString().padStart(2, '0')}:
-            {(timeLeft % 60).toString().padStart(2, '0')}
-          </div>
-          <div className={styles.timerControls}>
-            {isTimerActive ? (
-              <button className={styles.timerButton} onClick={pauseTimer}>
-                Pause
-              </button>
-            ) : (
-              <button className={styles.timerButton} onClick={resumeTimer}>
-                Resume
-              </button>
-            )}
-            <button className={styles.timerButton} onClick={resetTimer}>
-              Reset
-            </button>
-          </div>
-        </div>
+      {isHistoryOpen && (
+        <HistoryPanel
+          entries={entries}
+          onSelect={(entry) => {
+            if (hasUnsavedChanges) {
+              const shouldSwitch = window.confirm(
+                'You have unsaved changes. Do you want to switch to another entry?'
+              );
+              if (!shouldSwitch) return;
+            }
+            setCurrentEntry(entry);
+            setContent(entry.content);
+            setCurrentFont(entry.font);
+            setFontSize(entry.fontSize);
+            setHasUnsavedChanges(false);
+          }}
+          onDelete={(id) => {
+            const newEntries = entries.filter(e => e.id !== id);
+            setEntries(newEntries);
+            localStorage.setItem(ENTRIES_KEY, JSON.stringify(newEntries));
+          }}
+          onClearAll={() => {
+            setEntries([]);
+            localStorage.setItem(ENTRIES_KEY, '[]');
+          }}
+          isDarkTheme={isDarkTheme}
+          isOpen={isHistoryOpen}
+          onClose={() => setIsHistoryOpen(false)}
+          currentEntry={currentEntry}
+          onNewEntry={createNewEntry}
+        />
       )}
     </div>
   );
