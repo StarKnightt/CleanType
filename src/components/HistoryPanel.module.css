@@ -1,71 +1,134 @@
+:root {
+  --panel-bg: rgba(28, 28, 28, 0.95);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --panel-shadow: rgba(0, 0, 0, 0.25);
+  --text-primary: rgba(255, 255, 255, 0.9);
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --button-bg: rgba(255, 255, 255, 0.05);
+  --button-border: rgba(255, 255, 255, 0.1);
+  --button-hover-bg: rgba(255, 255, 255, 0.08);
+  --button-hover-border: rgba(255, 255, 255, 0.15);
+  --delete-hover: rgba(255, 59, 48, 0.1);
+  --delete-color: rgba(255, 59, 48, 0.9);
+}
+
+[data-theme="light"] {
+  --panel-bg: rgba(255, 255, 255, 0.95);
+  --panel-border: rgba(0, 0, 0, 0.08);
+  --panel-shadow: rgba(0, 0, 0, 0.08);
+  --text-primary: rgba(0, 0, 0, 0.9);
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-muted: rgba(0, 0, 0, 0.4);
+  --button-bg: rgba(0, 0, 0, 0.06);
+  --button-border: rgba(0, 0, 0, 0.08);
+  --button-hover-bg: rgba(0, 0, 0, 0.08);
+  --button-hover-border: rgba(0, 0, 0, 0.15);
+  --delete-hover: rgba(255, 59, 48, 0.12);
+  --delete-color: rgba(255, 59, 48, 1);
+}
+
 .panel {
   position: fixed;
-  top: 0;
   right: 0;
-  width: 350px;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(20px);
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+  top: 0;
+  bottom: 0;
+  width: 340px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transform: translateX(100%);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   z-index: 1000;
+  border-left: 1px solid var(--panel-border);
+  box-shadow: -8px 0 32px var(--panel-shadow);
   font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+.panel.open {
+  transform: translateX(0);
+}
+
 .header {
-  padding: 16px;
+  padding: 20px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: space-between;
+  border-bottom: 1px solid var(--panel-border);
+  background: var(--panel-bg);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
 }
 
 .headerButtons {
   display: flex;
+  gap: 12px;
   align-items: center;
-  gap: 8px;
 }
 
 .header h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
 }
 
 .closeButton, .newButton {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
+  background: var(--button-bg);
+  border: 1px solid var(--button-border);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--text-muted);
   transition: all 0.2s ease;
-  font-size: 20px;
+  cursor: pointer;
 }
 
 .closeButton:hover, .newButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
+  background: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
+  color: var(--text-primary);
 }
 
 .newButton {
-  font-size: 24px;
-  font-weight: 400;
+  width: auto;
+  padding: 0 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 8px;
+  box-shadow: 0 1px 2px var(--panel-shadow);
+}
+
+.newButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--panel-shadow);
+}
+
+.newButton:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px var(--panel-shadow);
 }
 
 .searchContainer {
-  padding: 16px;
+  position: sticky; /* keeps search visible when scrolling */
+  top: 0;
+  z-index: 10;
+  padding: 12px 16px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid var(--panel-border);
+  box-shadow: 0 2px 4px var(--panel-shadow);
+  
   display: flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px solid var(--border-color);
-  background: rgba(0, 0, 0, 0.2);
 }
 
 .searchIcon {
@@ -73,36 +136,45 @@
   left: 28px;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-muted);
   pointer-events: none;
 }
 
 .searchInput {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  background: var(--button-bg);
+  border: 1px solid var(--button-border);
   border-radius: 8px;
-  padding: 12px 16px;
-  color: inherit;
+  padding: 10px 12px 10px 36px;
+  color: var(--text-primary);
   font-size: 14px;
-  font-family: inherit;
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   transition: all 0.2s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+.searchInput:hover {
+  background: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
 }
 
 .searchInput:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.searchInput::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  background: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
+  box-shadow: 0 0 0 1px var(--button-hover-border);
 }
 
 .entriesList {
   flex: 1;
   overflow-y: auto;
-  padding: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .entriesList::-webkit-scrollbar {
@@ -114,38 +186,36 @@
 }
 
 .entriesList::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 
 .entriesList::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .entryItem {
-  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  margin-bottom: 8px;
-  cursor: pointer;
+  padding: 12px;
   transition: all 0.2s ease;
-  border: 1px solid transparent;
 }
 
 .entryItem:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .entryItem.active {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .entryHeader {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
 }
 
 .titleWrapper {
@@ -155,43 +225,22 @@
 }
 
 .entryTitle {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.titleInput {
-  width: 100%;
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 15px;
-  font-weight: 500;
-  font-family: inherit;
-}
-
-.titleInput:focus {
-  outline: none;
-  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: -0.2px;
 }
 
 .editButton {
+  all: unset;
+  cursor: pointer;
+  opacity: 0;
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
   padding: 4px;
   border-radius: 4px;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
   transition: all 0.2s ease;
 }
 
@@ -205,80 +254,84 @@
 }
 
 .entryDate {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .entryPreview {
-  font-size: 13px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.6);
+  margin: 0;
   line-height: 1.5;
-  margin-bottom: 12px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-family: inherit;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: -0.1px;
 }
 
 .entryFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
-}
-
-.entryMeta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  margin-top: 12px;
 }
 
 .wordCount {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .deleteButton {
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: none;
   background: transparent;
+  border: none;
   color: rgba(255, 255, 255, 0.4);
-  font-size: 13px;
+  padding: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.entryContent:hover .deleteButton {
+  opacity: 1;
 }
 
 .deleteButton:hover {
-  background: rgba(255, 0, 0, 0.1);
-  color: #ff4d4d;
-}
-
-.chevron {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 59, 48, 0.9);
+  background: rgba(255, 59, 48, 0.1);
 }
 
 .footer {
-  padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .clearAllButton {
   width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--button-bg);
+  border: 1px solid var(--button-border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .clearAllButton:hover {
-  background: rgba(255, 0, 0, 0.1);
-  color: #ff4d4d;
+  background: var(--delete-hover);
+  border-color: var(--button-hover-border);
+  color: var(--delete-color);
 }
 
 .emptyState {
@@ -290,43 +343,58 @@
 
 /* Light theme styles */
 .lightTheme {
-  background: rgba(255, 252, 242, 0.95);
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.08);
+}
+
+.lightTheme .header {
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
 }
 
 .lightTheme .header h2 {
   color: rgba(0, 0, 0, 0.9);
 }
 
-.lightTheme .closeButton, .lightTheme .newButton {
-  color: rgba(0, 0, 0, 0.6);
+.lightTheme .closeButton,
+.lightTheme .newButton {
+  color: rgba(0, 0, 0, 0.5);
 }
 
-.lightTheme .closeButton:hover, .lightTheme .newButton:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.9);
+.lightTheme .closeButton:hover,
+.lightTheme .newButton:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.lightTheme .newButton {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .lightTheme .searchContainer {
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
 }
 
 .lightTheme .searchInput {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.lightTheme .searchInput:focus {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .lightTheme .searchInput::placeholder {
   color: rgba(0, 0, 0, 0.4);
 }
 
-.lightTheme .entryItem {
-  background: rgba(0, 0, 0, 0.02);
+.lightTheme .searchInput:focus {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.lightTheme .entriesList {
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .lightTheme .entryItem:hover {
@@ -335,15 +403,23 @@
 
 .lightTheme .entryItem.active {
   background: rgba(0, 0, 0, 0.06);
-  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .lightTheme .entryTitle {
   color: rgba(0, 0, 0, 0.9);
 }
 
+.lightTheme .editButton {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.lightTheme .editButton:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.6);
+}
+
 .lightTheme .entryDate {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .lightTheme .entryPreview {
@@ -358,48 +434,153 @@
   color: rgba(0, 0, 0, 0.4);
 }
 
-.lightTheme .deleteButton:hover {
-  background: rgba(255, 0, 0, 0.05);
-  color: #ff4d4d;
+.lightTheme .footer {
+  background: rgba(255, 255, 255, 0.7);
+  border-top-color: rgba(0, 0, 0, 0.06);
 }
 
 .lightTheme .clearAllButton {
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 59, 48, 0.12);
+  border-color: rgba(255, 59, 48, 0.4);
+  color: #ff3b30;
+  font-weight: 600;
 }
 
 .lightTheme .clearAllButton:hover {
-  background: rgba(255, 0, 0, 0.05);
-  color: #ff4d4d;
+  background: rgba(255, 59, 48, 0.18);
+  border-color: rgba(255, 59, 48, 0.5);
+  color: #ff1f0f;
 }
 
-.lightTheme .emptyState {
-  color: rgba(0, 0, 0, 0.4);
+.lightTheme .entriesList::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
 }
 
-.lightTheme .titleInput {
-  border-color: rgba(0, 0, 0, 0.1);
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.9);
+.lightTheme .entriesList::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.15);
 }
 
-.lightTheme .titleInput:focus {
-  border-color: rgba(0, 0, 0, 0.2);
+/* Light theme confirmation dialog */
+.lightTheme .confirmContent {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .confirmContent h3 {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.lightTheme .confirmContent p {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.lightTheme .cancelButton {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.lightTheme .cancelButton:hover {
   background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.lightTheme .confirmButton {
+  background: rgba(255, 59, 48, 0.08);
+  color: #ff3b30;
+}
+
+.lightTheme .confirmButton:hover {
+  background: rgba(255, 59, 48, 0.12);
+}
+
+.confirmDialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+  font-family: 'Poppins', sans-serif;
+}
+
+.confirmContent {
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  animation: dialogAppear 0.2s ease;
+}
+
+.confirmContent h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.confirmContent p {
+  margin: 0 0 24px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancelButton,
+.confirmButton {
+  all: unset;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.cancelButton {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cancelButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.confirmButton {
+  background: rgba(255, 59, 48, 0.15);
+  color: #ff3b30;
+}
+
+.confirmButton:hover {
+  background: rgba(255, 59, 48, 0.25);
+}
+
+@keyframes dialogAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Mobile styles */
 @media (max-width: 768px) {
   .panel {
     width: 100%;
-  }
-  
-  .entriesList {
-    padding: 8px;
-  }
-  
-  .entryItem {
-    padding: 12px;
   }
 }
 

@@ -3,6 +3,7 @@ import { FullscreenEditor } from "./components/FullscreenEditor";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 import styles from './App.module.css';
+import './styles/theme.css';
 
 function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
@@ -15,6 +16,7 @@ function App() {
   // Save theme changes to localStorage
   useEffect(() => {
     localStorage.setItem('cleantype-theme', isDarkTheme ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
   }, [isDarkTheme]);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <div className={`${styles.app} ${isDarkTheme ? styles.darkTheme : styles.lightTheme}`}>
+      <div className={styles.app}>
         <FullscreenEditor 
           isDarkTheme={isDarkTheme}
           onThemeToggle={() => setIsDarkTheme(prev => !prev)}

@@ -36,29 +36,103 @@
   padding: 2rem;
   background: transparent;
   border: none;
-  outline: none;
+  outline: none !important;
   resize: none;
   line-height: 1.6;
   color: var(--text-color);
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  user-select: text;
+}
+
+.editor:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.editor:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.editor::selection {
+  background: var(--color-accent);
+  color: white;
+  opacity: 0.3;
+}
+
+.editor:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.editor:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.darkTheme .editor::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: inherit;
+}
+
+.lightTheme .editor::selection {
+  background: rgba(0, 0, 0, 0.1);
+  color: inherit;
 }
 
 .bottomNav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   height: 60px;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: transparent;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  opacity: 0.85;
-  transition: opacity 0.2s ease;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, transform 0.3s ease;
+  z-index: 1000;
 }
 
 .bottomNav:hover {
   opacity: 1;
+  transform: translateX(-50%) scale(1.01);
+}
+
+.bottomNav button {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.bottomNav button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  filter: brightness(1.15);
+}
+
+.bottomNav button:active {
+  transform: scale(0.97);
+  filter: brightness(0.95);
 }
 
 .leftControls,
@@ -552,11 +626,11 @@
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   border-radius: 8px;
-  padding: 8px;
+  padding: 6px;
   display: none;
   flex-direction: column;
   gap: 4px;
-  min-width: 160px;
+  min-width: 140px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 100;
 }
@@ -584,9 +658,9 @@
 .fontOption {
   all: unset;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 4px;
-  font-size: 15px;
+  font-size: 14px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -604,18 +678,6 @@
   font-size: 14px;
   opacity: 0.6;
   font-family: inherit;
-}
-
-/* Light theme support */
-.lightTheme .fontMenu {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.lightTheme .fontButton:hover,
-.lightTheme .fontOption:hover,
-.lightTheme .fontOption.active {
-  background: rgba(0, 0, 0, 0.05);
 }
 
 /* Theme styles */
@@ -1025,4 +1087,27 @@
 .timerWrapper :global(.customSubmit),
 .timerWrapper :global(.customCancel) {
   flex: 1;
+}
+
+.lightTheme .fontMenu {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .fontDivider {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme .fontOption {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.lightTheme .fontOption:hover,
+.lightTheme .fontOption.active {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.95);
+}
+
+.lightTheme .fontPreview {
+  opacity: 0.5;
 } 

@@ -552,12 +552,10 @@ export const FullscreenEditor: React.FC<FullscreenEditorProps> = ({ isDarkTheme,
                 {FONT_CATEGORIES.basic.map(font => (
                   <button
                     key={font}
-                    className={`${styles.fontOption} ${currentFont === font ? styles.active : ''}`}
+                    className={`${styles.fontOption} ${styles[`font-${font}`]} ${currentFont === font ? styles.active : ''}`}
                     onClick={() => setCurrentFont(font)}
-                    style={{ fontFamily: styles[`font-${font}`] }}
                   >
                     {FONT_LABELS[font]}
-                    <span className={styles.fontPreview}>Aa</span>
                   </button>
                 ))}
               </div>
@@ -566,12 +564,10 @@ export const FullscreenEditor: React.FC<FullscreenEditorProps> = ({ isDarkTheme,
                 {FONT_CATEGORIES.calligraphy.map(font => (
                   <button
                     key={font}
-                    className={`${styles.fontOption} ${currentFont === font ? styles.active : ''}`}
+                    className={`${styles.fontOption} ${styles[`font-${font}`]} ${currentFont === font ? styles.active : ''}`}
                     onClick={() => setCurrentFont(font)}
-                    style={{ fontFamily: styles[`font-${font}`] }}
                   >
                     {FONT_LABELS[font]}
-                    <span className={styles.fontPreview}>Aa</span>
                   </button>
                 ))}
               </div>
