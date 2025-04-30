@@ -1,32 +1,32 @@
-.app {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.container {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg-primary);
+  color: var(--color-primary);
+  transition: var(--transition-base);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: all 0.15s ease;
 }
 
-.darkTheme {
-  background-color: #1a1a1a;
-  color: rgba(255, 255, 255, 0.9);
-  --bg-color: #1a1a1a;
-  --text-color: rgba(255, 255, 255, 0.9);
-  --nav-bg: rgba(0, 0, 0, 0.85);
-  --border-color: rgba(255, 255, 255, 0.1);
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--nav-bg);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-md);
 }
 
-.lightTheme {
-  background-color: rgb(255, 252, 242);
-  color: rgba(0, 0, 0, 0.9);
-  --bg-color: rgb(255, 252, 242);
-  --text-color: rgba(0, 0, 0, 0.9);
-  --nav-bg: rgba(255, 252, 242, 0.95);
-  --border-color: rgba(0, 0, 0, 0.1);
+.main {
+  flex: 1;
+  padding: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
+
+/* Remove theme-specific classes as we're using data-theme now */
 
 /* Mobile styles */
 @media (max-width: 768px) {

@@ -39,67 +39,65 @@
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 16px;
+  margin-top: 24px;
 }
 
 .cancelButton,
 .confirmButton {
-  all: unset;
-  cursor: pointer;
+  background: transparent;
+  border: none;
   padding: 8px 16px;
-  border-radius: 6px;
+  cursor: pointer;
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
 }
 
 .cancelButton {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .cancelButton:hover {
-  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .confirmButton {
-  background: rgba(255, 59, 48, 0.15);
-  color: #ff3b30;
+  color: rgba(255, 59, 48, 0.8);
 }
 
 .confirmButton:hover {
-  background: rgba(255, 59, 48, 0.25);
+  color: rgba(255, 59, 48, 1);
 }
 
-/* Light theme */
-.lightTheme {
+/* Properly scoped light theme styling */
+[data-theme="light"] .dialog {
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.lightTheme h3 {
+[data-theme="light"] .dialog h3 {
   color: rgba(0, 0, 0, 0.9);
 }
 
-.lightTheme p {
+[data-theme="light"] .dialog p {
   color: rgba(0, 0, 0, 0.7);
 }
 
-.lightTheme .cancelButton {
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.8);
+[data-theme="light"] .dialog .cancelButton {
+  color: rgba(0, 0, 0, 0.6);
 }
 
-.lightTheme .cancelButton:hover {
-  background: rgba(0, 0, 0, 0.1);
+[data-theme="light"] .dialog .cancelButton:hover {
+  color: rgba(0, 0, 0, 0.9);
 }
 
-.lightTheme .confirmButton {
-  background: rgba(255, 59, 48, 0.1);
+[data-theme="light"] .dialog .confirmButton {
+  color: rgba(255, 59, 48, 0.8);
 }
 
-.lightTheme .confirmButton:hover {
-  background: rgba(255, 59, 48, 0.15);
+[data-theme="light"] .dialog .confirmButton:hover {
+  color: rgba(255, 59, 48, 1);
 }
 
 @keyframes dialogAppear {

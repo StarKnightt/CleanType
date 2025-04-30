@@ -10,7 +10,7 @@
   justify-content: center;
   z-index: 2000;
   backdrop-filter: blur(8px);
-  animation: dialogAppear 0.2s ease;
+  animation: fadeIn 0.3s ease;
 }
 
 .overlay.light {
@@ -117,20 +117,22 @@
 }
 
 .timerButton {
-  background: transparent;
-  border: none;
-  color: inherit;
+  all: unset;
   cursor: pointer;
-  font-size: 1rem;
-  padding: 8px;
-  transition: opacity 0.2s;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
 .timerButton:hover {
-  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+:global(.lightTheme) .timerButton:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .timerPopup {
@@ -154,10 +156,14 @@
 }
 
 .timerDisplay {
-  font-size: 2rem;
-  font-weight: 500;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.clockIcon {
+  font-size: 14px;
+  opacity: 0.7;
 }
 
 .timerControls {
@@ -255,6 +261,17 @@
 
 .timerContainer {
   position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 50px;
+  font-variant-numeric: tabular-nums;
+  font-size: 15px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.timerContainer:hover {
+  opacity: 1;
 }
 
 .timerButton.active {
@@ -295,14 +312,19 @@
   text-align: center;
 }
 
+/* Style .timerDialog as a modal, removing absolute positioning */
 .timerDialog {
+  /* Removed absolute positioning */
+  /* transform: translateX(-50%); */ 
+  /* Removed transform */
   background: rgba(30, 30, 30, 0.95);
-  border-radius: 16px;
+  border-radius: 12px; /* Adjusted from 16px */
   padding: 24px;
-  width: 90%;
-  max-width: 400px;
+  width: 90%; /* Use width instead of min-width for responsiveness */
+  max-width: 360px; /* Limit max width */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  animation: dialogSlide 0.2s ease;
+  animation: dialogAppear 0.2s ease; /* Re-use dialogAppear animation */
+  /* Removed z-index, handled by overlay */
 }
 
 .dialogHeader {
@@ -346,27 +368,166 @@
 }
 
 .presetButtons {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 8px;
+  background: var(--nav-bg);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
   display: flex;
-  gap: 8px;
+  flex-direction: column-reverse;
+  gap: 4px;
+  min-width: 100px;
+  z-index: 10;
+  animation: slideUp 0.2s ease;
 }
 
 .presetButton {
   all: unset;
   cursor: pointer;
-  padding: 6px 12px;
+  padding: 8px 12px;
   border-radius: 6px;
   font-size: 14px;
-  background: rgba(255, 255, 255, 0.1);
+  opacity: 0.8;
   transition: all 0.2s ease;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .presetButton:hover {
+  opacity: 1;
   background: rgba(255, 255, 255, 0.15);
+  transform: translateX(2px);
 }
 
-.presetButton.active {
-  background: rgba(74, 158, 255, 0.2);
-  color: #4a9eff;
+:global(.lightTheme) .presetButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+:global(.lightTheme) .presetButton:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.activeTimer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time {
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.control {
+  all: unset;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.control:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.control:active {
+  transform: translateY(0);
+}
+
+:global(.lightTheme) .control:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+@keyframes dialogAppear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Light theme */
+[data-theme='light'] .timerDialog {
+  background: rgba(255, 252, 242, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Adjusted shadow */
+}
+
+[data-theme='light'] .dialogHeader h3 {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme='light'] .closeButton {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme='light'] .closeButton:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme='light'] .inputLabel {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme='light'] .timeInput {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme='light'] .timeInput:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='light'] .timeInput:focus {
+  border-color: #0066cc;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='light'] .cancelButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme='light'] .cancelButton:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .startButton {
+  background: #0066cc;
+}
+
+[data-theme='light'] .startButton:hover {
+  background: #0052a3;
 }
 
 .customTime {
@@ -453,208 +614,6 @@
   cursor: not-allowed;
 }
 
-@keyframes dialogAppear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes dialogSlide {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Light theme */
-[data-theme='light'] .timerDialog {
-  background: rgba(255, 252, 242, 0.95);
-}
-
-[data-theme='light'] .dialogHeader h3 {
-  color: rgba(0, 0, 0, 0.9);
-}
-
-[data-theme='light'] .closeButton {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-[data-theme='light'] .closeButton:hover {
-  background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.8);
-}
-
-[data-theme='light'] .inputLabel {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-[data-theme='light'] .timeInput {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.9);
-}
-
-[data-theme='light'] .timeInput:hover {
-  border-color: rgba(0, 0, 0, 0.2);
-}
-
-[data-theme='light'] .timeInput:focus {
-  border-color: #0066cc;
-  background: rgba(0, 0, 0, 0.08);
-}
-
-[data-theme='light'] .cancelButton {
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.9);
-}
-
-[data-theme='light'] .cancelButton:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-[data-theme='light'] .startButton {
-  background: #0066cc;
-}
-
-[data-theme='light'] .startButton:hover {
-  background: #0052a3;
-}
-
-.activeTimer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.time {
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
-  min-width: 45px;
-}
-
-.controls {
-  display: flex;
-  gap: 4px;
-}
-
-.control {
-  all: unset;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.control:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-:global(.lightTheme) .control:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.presetButtons {
-  display: flex;
-  gap: 8px;
-}
-
-.presetButton {
-  all: unset;
-  cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  background: rgba(255, 255, 255, 0.1);
-  transition: all 0.2s ease;
-}
-
-.presetButton:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-:global(.lightTheme) .presetButton {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-:global(.lightTheme) .presetButton:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.customInput {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 200px;
-}
-
-.customTimeInput {
-  all: unset;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  color: inherit;
-  font-size: 14px;
-  text-align: center;
-  transition: all 0.2s ease;
-}
-
-.customTimeInput:focus {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.customTimeInput::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.customButtons {
-  display: flex;
-  gap: 8px;
-}
-
-.customSubmit,
-.customCancel {
-  all: unset;
-  flex: 1;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.customSubmit {
-  background: rgba(74, 158, 255, 0.2);
-  color: #4a9eff;
-}
-
-.customSubmit:hover {
-  background: rgba(74, 158, 255, 0.3);
-}
-
-.customCancel {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.customCancel:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.customButton {
-  border: 1px dashed rgba(255, 255, 255, 0.2) !important;
-}
-
-.customButton:hover {
-  border-color: rgba(255, 255, 255, 0.3) !important;
-}
-
 /* Light theme styles */
 :global(.lightTheme) .customTimeInput {
   background: rgba(0, 0, 0, 0.05);
@@ -685,10 +644,175 @@
   background: rgba(0, 0, 0, 0.08);
 }
 
-:global(.lightTheme) .customButton {
-  border: 1px dashed rgba(0, 0, 0, 0.2) !important;
-}
-
 :global(.lightTheme) .customButton:hover {
   border-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Ensure custom button visibility in light theme */
+:global(.lightTheme) .presetButton.customButton {
+  color: rgba(0, 0, 0, 0.7); /* Make text darker */
+  border: 1px solid rgba(0, 0, 0, 0.15); /* Add subtle border */
+}
+
+:global(.lightTheme) .presetButton.customButton:hover {
+  color: rgba(0, 0, 0, 0.9); 
+  border-color: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Ensure overlay is always full-screen and blurred */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease;
+}
+
+[data-theme='light'] .overlay {
+  background: rgba(0,0,0,0.18);
+  backdrop-filter: blur(8px);
+}
+
+.notification {
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+  transition: all 0.2s ease;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+  animation: bounce 1s ease infinite;
+  opacity: 0.9;
+}
+
+.notification h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  transition: color 0.2s ease;
+}
+
+.notification p {
+  margin: 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.2s ease;
+}
+
+.subtext {
+  font-size: 14px !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  transition: color 0.2s ease;
+}
+
+.closeButton {
+  all: unset;
+  margin-top: 8px;
+  padding: 12px 32px;
+  background: rgba(74, 158, 255, 0.2);
+  color: #4a9eff;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(74, 158, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.closeButton:active {
+  transform: translateY(0);
+}
+
+/* Light theme */
+.lightTheme {
+  background: rgba(255, 252, 242, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.lightTheme h2 {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.lightTheme p {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.lightTheme .subtext {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.lightTheme .closeButton {
+  background: rgba(0, 102, 204, 0.1);
+  color: #0066cc;
+}
+
+.lightTheme .closeButton:hover {
+  background: rgba(0, 102, 204, 0.15);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 } 
