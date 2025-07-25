@@ -14,7 +14,7 @@ A modern, efficient text cleaning tool built with Tauri and React. CleanType hel
 
 ## Installation
 
-Download the latest installer from our [releases page](https://yourusername.github.io/cleantype/downloads).
+Download the latest installer from our [releases page](https://github.com/StarKnightt/CleanType/releases).
 
 **Note**: When running the installer, you may see a Windows SmartScreen warning. This occurs because the application is new and hasn't built up enough reputation yet. You can safely proceed by clicking "More info" and then "Run anyway".
 
@@ -34,7 +34,7 @@ Download the latest installer from our [releases page](https://yourusername.gith
 
 2. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/cleantype.git
+   git clone https://github.com/StarKnightt/CleanType.git
    cd cleantype
    ```
 
@@ -69,4 +69,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-If you encounter any issues or have questions, please [open an issue](https://github.com/yourusername/cleantype/issues) on GitHub.
+If you encounter any issues or have questions, please [open an issue](https://github.com/StarKnightt/CleanType/issues) on GitHub.
