@@ -8,7 +8,7 @@ import './styles/theme.css';
 function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const saved = localStorage.getItem('cleantype-theme');
-    return saved !== 'light'; // Default to dark theme if not explicitly set to light
+    return saved !== 'light';
   });
 
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
@@ -34,7 +34,7 @@ function App() {
   return (
     <ErrorBoundary>
       <div className={styles.app}>
-        <FullscreenEditor 
+        <FullscreenEditor
           isDarkTheme={isDarkTheme}
           onThemeToggle={() => setIsDarkTheme(prev => !prev)}
         />

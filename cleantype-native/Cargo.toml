@@ -1,0 +1,39 @@
+[package]
+name = "cleantype"
+version = "0.3.0"
+edition = "2021"
+description = "A minimalist freewriting app built with pure Rust"
+authors = ["StarKnightt"]
+license = "MIT"
+
+[dependencies]
+eframe = { version = "0.29", default-features = false, features = [
+    "default_fonts",
+    "glow",
+    "persistence",
+] }
+egui = "0.29"
+egui_extras = { version = "0.29", features = ["all_loaders"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+directories = "5.0"
+uuid = { version = "1.0", features = ["v4"] }
+image = { version = "0.25", default-features = false, features = ["png"] }
+rand = "0.8"
+
+# Windows-specific
+[target.'cfg(windows)'.dependencies]
+winapi = { version = "0.3", features = ["winuser"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[package.metadata.bundle]
+name = "CleanType"
+identifier = "com.starknightt.cleantype"
+icon = ["icons/icon.png"]
