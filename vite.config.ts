@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react";
 import type { UserConfig } from 'vite';
 
 const host = process.env.TAURI_DEV_HOST ?? false;
-const isTauri = Boolean(process.env.TAURI_DEBUG || process.env.TAURI_PLATFORM);
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -41,7 +40,7 @@ export default defineConfig({
     sourcemap: !!process.env.TAURI_DEBUG,
     rollupOptions: {
       input: {
-        main: isTauri ? './index.html' : './public/index.html'
+        main: './index.html'
       },
       output: {
         manualChunks: {

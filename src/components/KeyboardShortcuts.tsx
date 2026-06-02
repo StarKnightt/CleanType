@@ -26,14 +26,13 @@ const SHORTCUTS: ShortcutGroups = {
     { key: 'Ctrl + A', description: 'Select All' },
   ],
   'Document': [
-    { key: 'Ctrl + S', description: 'Save to file' },
+    { key: 'Ctrl + S', description: 'Save to history' },
     { key: 'Ctrl + N', description: 'New entry' },
     { key: 'Ctrl + /', description: 'Show keyboard shortcuts' },
   ],
   'View': [
     { key: 'F11', description: 'Toggle fullscreen' },
     { key: 'Ctrl + Scroll', description: 'Adjust font size' },
-    { key: 'Esc', description: 'Clear selection' },
   ],
 };
 

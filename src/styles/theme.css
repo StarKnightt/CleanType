@@ -51,6 +51,28 @@
   /* Animation */
   --transition-fast: 0.15s ease;
   --transition-slow: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Apple-flavored design tokens ───────────────────────── */
+  /* System accent (blue) + destructive (red) */
+  --accent: #007aff;
+  --accent-strong: #0a6cff;
+  --accent-soft: rgba(0, 122, 255, 0.12);
+  --danger: #ff3b30;
+
+  /* Motion */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Frosted-glass surfaces (light theme defaults) */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-blur: saturate(180%) blur(20px);
+  --hairline: rgba(0, 0, 0, 0.08);
+  --surface: rgba(0, 0, 0, 0.04);
+  --surface-hover: rgba(0, 0, 0, 0.07);
+  --surface-active: rgba(0, 0, 0, 0.11);
+  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.14), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-pop: 0 8px 28px rgba(0, 0, 0, 0.16), 0 1px 1px rgba(0, 0, 0, 0.05);
+  --selection: rgba(0, 122, 255, 0.18);
 }
 
 [data-theme="dark"] {
@@ -64,6 +86,42 @@
   --bg-hover: rgba(255, 255, 255, 0.08);
   --bg-active: rgba(255, 255, 255, 0.12);
   --border-hover: rgba(255, 255, 255, 0.2);
+
+  --accent: #0a84ff;
+  --accent-strong: #409cff;
+  --accent-soft: rgba(10, 132, 255, 0.18);
+
+  --glass-bg: rgba(28, 28, 30, 0.62);
+  --hairline: rgba(255, 255, 255, 0.1);
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-hover: rgba(255, 255, 255, 0.1);
+  --surface-active: rgba(255, 255, 255, 0.15);
+  --shadow-float: 0 16px 48px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 10px 34px rgba(0, 0, 0, 0.6), 0 1px 1px rgba(0, 0, 0, 0.4);
+  --selection: rgba(10, 132, 255, 0.32);
+}
+
+/* Global base: Apple-style typography rendering + clean app shell */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg-primary);
+  color: var(--color-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+::selection {
+  background: var(--selection);
 }
 
 /* Accessibility */
@@ -76,8 +134,14 @@
   }
 }
 
-/* Focus styles */
+/* Focus styles — Apple-style accent ring (was a jarring red).
+   The ring follows each element's own border-radius automatically. */
 *:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft), 0 0 0 1px var(--accent);
+}
+
+/* The editor manages its own (invisible) focus treatment */
+textarea:focus-visible {
+  box-shadow: none;
 } 

@@ -73,66 +73,64 @@
   box-shadow: none !important;
 }
 
-.darkTheme .editor::selection {
-  background: rgba(255, 255, 255, 0.2);
-  color: inherit;
-}
-
+.darkTheme .editor::selection,
 .lightTheme .editor::selection {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--selection);
   color: inherit;
 }
 
 .bottomNav {
   position: fixed;
-  bottom: 20px;
+  bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
-  height: 60px;
-  padding: 0 1.5rem;
+  padding: 7px 10px;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  opacity: 0.9;
-  transition: opacity 0.2s ease, transform 0.3s ease;
+  gap: 6px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  box-shadow: var(--shadow-float);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: var(--color-secondary);
+  opacity: 1;
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring);
   z-index: 1000;
 }
 
 .bottomNav:hover {
-  opacity: 1;
-  transform: translateX(-50%) scale(1.01);
+  transform: translateX(-50%) translateY(-1px);
 }
 
 .bottomNav button {
   background: transparent;
   border: none;
   outline: none;
-  width: 44px;
-  height: 44px;
+  height: 34px;
+  padding: 0 10px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+  color: var(--color-secondary);
+  transition: background 0.18s var(--ease-out), color 0.18s var(--ease-out),
+    transform 0.12s var(--ease-out);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .bottomNav button:hover {
-  background: rgba(255, 255, 255, 0.12);
-  filter: brightness(1.15);
+  background: var(--surface-hover);
+  color: var(--color-primary);
 }
 
 .bottomNav button:active {
-  transform: scale(0.97);
-  filter: brightness(0.95);
+  transform: scale(0.96);
+  background: var(--surface-active);
 }
 
 .leftControls,
@@ -159,12 +157,16 @@
   border-radius: 4px;
 }
 
+/* Render the "•" separators as subtle hairline dividers */
 .navDot {
-  color: #666;
-  opacity: 0.5;
+  width: 1px;
+  height: 18px;
+  margin: 0 4px;
+  background: var(--hairline);
+  color: transparent;
+  font-size: 0;
   user-select: none;
-  font-size: 15px;
-  margin: 0 2px;
+  flex: none;
 }
 
 .fontButton,
@@ -359,21 +361,26 @@
 
 .sizePresets {
   position: absolute;
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%);
   display: none;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
-  border-radius: 6px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
   padding: 6px;
-  gap: 4px;
-  min-width: 60px;
+  gap: 2px;
+  min-width: 72px;
+  box-shadow: var(--shadow-pop);
+  transform-origin: bottom center;
 }
 
 .sizeWrapper:focus-within .sizePresets {
   display: flex;
+  animation: menuPop 0.2s var(--ease-spring);
 }
 
 .timerDialog {
@@ -499,17 +506,17 @@
 .sizePreset {
   all: unset;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 7px 10px;
+  border-radius: 8px;
   text-align: center;
-  transition: background-color 0.2s ease;
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.8);
+  transition: background-color 0.18s var(--ease-out), color 0.18s var(--ease-out);
+  font-size: 14px;
+  color: var(--color-secondary);
 }
 
 .sizePreset:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: var(--surface-hover);
+  color: var(--color-primary);
 }
 
 .fontOption {
@@ -529,20 +536,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Make sure light theme colors are properly inherited */
-.lightTheme .sizePresets {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.lightTheme .sizePreset {
-  color: rgba(0, 0, 0, 0.7);
-}
-
-.lightTheme .sizePreset:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: black;
-}
+/* Size menu shares the glass + surface tokens across both themes */
 
 /* Font styles */
 .font-lato {
@@ -620,29 +614,44 @@
 
 .fontMenu {
   position: absolute;
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
-  border-radius: 8px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
   padding: 6px;
   display: none;
   flex-direction: column;
-  gap: 4px;
-  min-width: 140px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  gap: 2px;
+  min-width: 150px;
+  box-shadow: var(--shadow-pop);
   z-index: 100;
+  transform-origin: bottom center;
 }
 
 .fontDropdown:focus-within .fontMenu {
   display: flex;
+  animation: menuPop 0.2s var(--ease-spring);
 }
 
 .fontDivider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 4px 0;
+  background: var(--hairline);
+  margin: 5px 2px;
+}
+
+@keyframes menuPop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
 }
 
 .fontCategory {
@@ -658,20 +667,24 @@
 .fontOption {
   all: unset;
   cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 4px;
+  padding: 7px 10px;
+  border-radius: 8px;
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: background 0.18s var(--ease-out), color 0.18s var(--ease-out);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  opacity: 0.85;
+  color: var(--color-secondary);
 }
 
-.fontOption:hover,
-.fontOption.active {
-  background: rgba(255, 255, 255, 0.1);
-  opacity: 1;
+.fontMenu .fontOption:hover {
+  background: var(--surface-hover);
+  color: var(--color-primary);
+}
+
+.fontMenu .fontOption.active {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .fontPreview {
@@ -714,44 +727,51 @@
 
 .newEntryButton {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: inherit;
+  top: 1.75rem;
+  right: 1.75rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: var(--color-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  opacity: 0.7;
-  transition: all 0.2s ease;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1;
+  box-shadow: var(--shadow-pop);
+  transition: transform 0.18s var(--ease-out), color 0.18s var(--ease-out),
+    background 0.18s var(--ease-out);
   z-index: 10;
 }
 
 .newEntryButton:hover {
-  opacity: 1;
-  transform: translateY(-1px);
+  color: var(--accent);
+  transform: translateY(-1px) scale(1.05);
 }
 
-.darkTheme .newEntryButton {
-  color: rgba(255, 255, 255, 0.9);
+.newEntryButton:active {
+  transform: translateY(0) scale(0.95);
 }
 
-.lightTheme .newEntryButton {
-  color: rgba(0, 0, 0, 0.9);
-}
-
-/* Remove the old wordCount positioning */
+/* Subtle centered word counter, lifted out of the text flow */
 .wordCount {
-  position: relative;
-  top: auto;
-  left: auto;
-  transform: none;
-  margin-bottom: 0;
+  position: fixed;
+  top: 1.9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Tablet and smaller desktop */
@@ -803,13 +823,11 @@
   opacity: 1;
 }
 
-.saveButton.hasChanges {
-  color: #4a9eff;
-  opacity: 1;
-}
-
+.saveButton.hasChanges,
 .lightTheme .saveButton.hasChanges {
-  color: #0066cc;
+  background: var(--accent);
+  color: #fff;
+  opacity: 1;
 }
 
 .historyToggle {
@@ -1089,25 +1107,69 @@
   flex: 1;
 }
 
-.lightTheme .fontMenu {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.lightTheme .fontDivider {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.lightTheme .fontOption {
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.lightTheme .fontOption:hover,
-.lightTheme .fontOption.active {
-  background: rgba(0, 0, 0, 0.06);
-  color: rgba(0, 0, 0, 0.95);
-}
-
 .lightTheme .fontPreview {
   opacity: 0.5;
+}
+
+/* ── Unified Apple-style pill controls in the bottom nav ──────── */
+.leftControls,
+.rightControls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sizeButton,
+.fontButton,
+.historyToggle,
+.themeToggle,
+.saveButton,
+.leftControls > .fontOption {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-secondary);
+  transition: background 0.18s var(--ease-out), color 0.18s var(--ease-out),
+    transform 0.12s var(--ease-out);
+}
+
+.sizeButton:hover,
+.fontButton:hover,
+.historyToggle:hover,
+.themeToggle:hover,
+.saveButton:hover,
+.leftControls > .fontOption:hover {
+  background: var(--surface-hover);
+  color: var(--color-primary);
+}
+
+.sizeButton:active,
+.fontButton:active,
+.historyToggle:active,
+.themeToggle:active,
+.saveButton:active,
+.leftControls > .fontOption:active {
+  transform: scale(0.95);
+  background: var(--surface-active);
+}
+
+.historyToggle.active,
+.leftControls > .fontOption.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.saveButton.hasChanges:hover {
+  background: var(--accent-strong);
+  color: #fff;
 } 

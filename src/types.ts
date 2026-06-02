@@ -1,10 +1,23 @@
+export type FontStyle =
+  | 'lato'
+  | 'arial'
+  | 'system'
+  | 'serif'
+  | 'script'
+  | 'elegant'
+  | 'classic'
+  | 'playpen'
+  | 'random';
+
+export type Theme = 'dark' | 'light';
+
 export interface Entry {
   id: string;
   content: string;
   createdAt: string;
   updatedAt: string;
   title: string;
-  font: 'lato' | 'arial' | 'system' | 'serif' | 'script' | 'elegant' | 'classic' | 'playpen' | 'random';
+  font: FontStyle;
   fontSize: string;
-  theme: 'dark' | 'light';
-} 
+  theme: Theme;
+}

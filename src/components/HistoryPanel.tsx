@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import styles from './HistoryPanel.module.css';
 import { Entry } from '../types';
-import { FiTrash2, FiEdit2, FiX } from 'react-icons/fi';
+import { FiTrash2, FiEdit2, FiX, FiUpload, FiDownload } from 'react-icons/fi';
 import { MdDeleteSweep } from 'react-icons/md';
 
 interface HistoryPanelProps {
@@ -10,6 +10,9 @@ interface HistoryPanelProps {
   onSelect: (entry: Entry) => void;
   onDelete: (id: string) => void;
   onClearAll: () => void;
+  onRename: (id: string, title: string) => void;
+  onExport: () => void;
+  onImport: () => void;
   isDarkTheme: boolean;
   isOpen: boolean;
   onClose: () => void;
@@ -27,6 +30,9 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
   onSelect,
   onDelete,
   onClearAll,
+  onRename,
+  onExport,
+  onImport,
   isDarkTheme,
   isOpen,
   onClose,
@@ -38,7 +44,6 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -60,22 +65,11 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     setEditedTitle(entry.title);
   };
 
-  const handleTitleSave = async (entry: Entry) => {
-    try {
-      setIsLoading(true);
-      const updatedEntries = entries.map(e => 
-        e.id === entry.id ? { ...e, title: editedTitle } : e
-      );
-      localStorage.setItem('cleantype-entries', JSON.stringify(updatedEntries));
-      onSelect({ ...entry, title: editedTitle });
-      setIsEditingId(null);
-      toast.success('Entry renamed successfully');
-    } catch (error) {
-      console.error('Failed to rename entry:', error);
-      toast.error('Failed to rename entry');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleTitleSave = (entry: Entry) => {
+    const title = editedTitle.trim() || 'Untitled';
+    onRename(entry.id, title);
+    setIsEditingId(null);
+    toast.success('Entry renamed');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, entry: Entry) => {
@@ -112,9 +106,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
       </div>
 
       <div className={styles.entriesList}>
-        {isLoading ? (
-          <div className={styles.loadingContainer}>Loading...</div>
-        ) : filteredEntries.length === 0 ? (
+        {filteredEntries.length === 0 ? (
           <div className={styles.emptyState}>
             {searchQuery ? 'No entries found' : 'No entries yet'}
           </div>
@@ -180,6 +172,21 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
       </div>
 
       <div className={styles.footer}>
+        <div className={styles.footerActions}>
+          <button className={styles.footerButton} onClick={onImport} title="Import entries from a file">
+            <FiUpload size={16} />
+            Import
+          </button>
+          <button
+            className={styles.footerButton}
+            onClick={onExport}
+            disabled={entries.length === 0}
+            title="Export all entries to a file"
+          >
+            <FiDownload size={16} />
+            Export
+          </button>
+        </div>
         <button
           className={styles.clearAllButton}
           onClick={() => setShowClearConfirm(true)}
