@@ -23,12 +23,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest' # Apple Silicon (M-series)
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' # Intel
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04'
-            args: ''
+          # macOS and Linux are temporarily disabled: on Tauri 1.x CI the webview
+          # deps (wry/webkit2gtk) fail to compile on Linux and macOS bundling
+          # produces no artifacts. Re-enable these once those builds are fixed.
+          # - platform: 'macos-latest' # Apple Silicon (M-series)
+          #   args: '--target aarch64-apple-darwin'
+          # - platform: 'macos-latest' # Intel
+          #   args: '--target x86_64-apple-darwin'
+          # - platform: 'ubuntu-22.04'
+          #   args: ''
           - platform: 'windows-latest'
             args: ''
 
