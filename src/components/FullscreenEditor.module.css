@@ -93,7 +93,7 @@
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--hairline);
   border-radius: 18px;
-  box-shadow: var(--shadow-float);
+  box-shadow: var(--shadow-float), inset 0 1px 0 var(--glass-edge);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: var(--color-secondary);
@@ -1172,6 +1172,14 @@
 .saveButton.hasChanges:hover {
   background: var(--accent-strong);
   color: #fff;
+}
+
+/* Ambient gradient background so the frosted nav/menus have real content to
+   blur — this is what makes the glass read as glass over an otherwise flat page.
+   Higher specificity + late position so it wins over the flat-color theme rules. */
+.editorContainer.lightTheme,
+.editorContainer.darkTheme {
+  background: var(--app-bg);
 }
 
 /* ── Drag-and-drop file overlay ──────────────────────────────── */
