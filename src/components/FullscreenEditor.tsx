@@ -7,7 +7,15 @@ import { HistoryPanel } from './HistoryPanel';
 import type { Entry, FontStyle, Theme } from '../types';
 import { useEntries } from '../hooks/useEntries';
 import { useUndoRedo } from '../hooks/useUndoRedo';
-import { exportEntries, importEntries } from '../lib/storage';
+import {
+  exportEntries,
+  importEntries,
+  openTextFile,
+  readTextFileAtPath,
+  isTextFilePath,
+  isTauri,
+  type OpenedFile,
+} from '../lib/storage';
 
 interface FullscreenEditorProps {
   isDarkTheme: boolean;
@@ -75,9 +83,11 @@ export const FullscreenEditor: React.FC<FullscreenEditorProps> = ({ isDarkTheme,
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(PLACEHOLDERS[0]);
+  const [isDragging, setIsDragging] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const loadedEntryId = useRef<string | null>(null);
+  const handleDropRef = useRef<(paths: string[]) => void>(() => {});
 
   // Load editor text only when a *different* entry becomes active — not on
   // every auto-save — so undo history survives while typing. The content guard
@@ -203,6 +213,9 @@ export const FullscreenEditor: React.FC<FullscreenEditorProps> = ({ isDarkTheme,
     } else if (mod && e.key === 'n') {
       e.preventDefault();
       handleNewEntry();
+    } else if (mod && e.key === 'o') {
+      e.preventDefault();
+      void handleOpenFile();
     } else if (mod && !e.shiftKey && e.key === 'z') {
       e.preventDefault();
       undo();
@@ -282,6 +295,67 @@ export const FullscreenEditor: React.FC<FullscreenEditorProps> = ({ isDarkTheme,
     }
   };
 
+  // Load an external text file as a brand-new entry, flushing any pending edits
+  // to the current entry first so nothing is lost.
+  const openFileAsEntry = (file: OpenedFile) => {
+    if (currentEntry && content !== currentEntry.content) {
+      updateCurrent({ content, font: currentFont, fontSize, theme });
+    }
+    const entry = createEntry({ font: currentFont, fontSize, theme }, file.content);
+    if (file.title) renameEntry(entry.id, file.title);
+  };
+
+  const handleOpenFile = async () => {
+    try {
+      const file = await openTextFile();
+      if (!file) return;
+      openFileAsEntry(file);
+      toast.success(`Opened ${file.title}`);
+    } catch (error) {
+      console.error('Open failed:', error);
+      toast.error('Could not open that file');
+    }
+  };
+
+  // Always point the (mount-time) drag-drop listener at a closure with fresh
+  // state, so we register the native listener only once.
+  handleDropRef.current = async (paths: string[]) => {
+    const target = paths.find(isTextFilePath) ?? paths[0];
+    if (!target) return;
+    try {
+      const file = await readTextFileAtPath(target);
+      openFileAsEntry(file);
+      toast.success(`Opened ${file.title}`);
+    } catch (error) {
+      console.error('Drop open failed:', error);
+      toast.error('Could not open that file');
+    }
+  };
+
+  // Native (Tauri) file drag-and-drop. Registered once; reads the dropped path
+  // through the Rust command so it works outside the sandboxed FS scope.
+  useEffect(() => {
+    if (!isTauri()) return;
+    let active = true;
+    let unlisten: (() => void) | undefined;
+    appWindow
+      .onFileDropEvent((event) => {
+        if (event.payload.type === 'hover') setIsDragging(true);
+        else if (event.payload.type === 'drop') {
+          setIsDragging(false);
+          handleDropRef.current(event.payload.paths);
+        } else setIsDragging(false);
+      })
+      .then((fn) => {
+        if (active) unlisten = fn;
+        else fn();
+      });
+    return () => {
+      active = false;
+      unlisten?.();
+    };
+  }, []);
+
   return (
     <div className={`${styles.editorContainer} ${isDarkTheme ? styles.darkTheme : styles.lightTheme}`}>
       <Toaster
@@ -317,6 +391,29 @@ export const FullscreenEditor: React.FC<FullscreenEditorProps> = ({ isDarkTheme,
           },
         }}
       />
+      {isDragging && (
+        <div className={styles.dropOverlay}>
+          <div className={styles.dropCard}>
+            <svg
+              className={styles.dropIcon}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+              <path d="M5 21V5a2 2 0 0 1 2-2h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" />
+              <path d="M12 11v6" />
+              <path d="m9 14 3-3 3 3" />
+            </svg>
+            <p className={styles.dropTitle}>Drop to open</p>
+            <p className={styles.dropHint}>.txt, .md, or plain text</p>
+          </div>
+        </div>
+      )}
       <div className={styles.wordCount}>
         {wordCount} {wordCount === 1 ? 'word' : 'words'}
       </div>
@@ -431,6 +528,7 @@ export const FullscreenEditor: React.FC<FullscreenEditorProps> = ({ isDarkTheme,
           onRename={renameEntry}
           onExport={handleExport}
           onImport={handleImport}
+          onOpenFile={handleOpenFile}
           isDarkTheme={isDarkTheme}
           isOpen={isHistoryOpen}
           onClose={() => setIsHistoryOpen(false)}

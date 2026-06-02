@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import styles from './HistoryPanel.module.css';
 import { Entry } from '../types';
-import { FiTrash2, FiEdit2, FiX, FiUpload, FiDownload } from 'react-icons/fi';
+import { FiTrash2, FiEdit2, FiX, FiUpload, FiDownload, FiFilePlus } from 'react-icons/fi';
 import { MdDeleteSweep } from 'react-icons/md';
 
 interface HistoryPanelProps {
@@ -13,6 +13,7 @@ interface HistoryPanelProps {
   onRename: (id: string, title: string) => void;
   onExport: () => void;
   onImport: () => void;
+  onOpenFile: () => void;
   isDarkTheme: boolean;
   isOpen: boolean;
   onClose: () => void;
@@ -33,6 +34,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
   onRename,
   onExport,
   onImport,
+  onOpenFile,
   isDarkTheme,
   isOpen,
   onClose,
@@ -173,7 +175,15 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
 
       <div className={styles.footer}>
         <div className={styles.footerActions}>
-          <button className={styles.footerButton} onClick={onImport} title="Import entries from a file">
+          <button
+            className={styles.footerButton}
+            onClick={onOpenFile}
+            title="Open a .txt or .md file as a new entry"
+          >
+            <FiFilePlus size={16} />
+            Open
+          </button>
+          <button className={styles.footerButton} onClick={onImport} title="Import entries from a backup file">
             <FiUpload size={16} />
             Import
           </button>

@@ -28,6 +28,7 @@ const SHORTCUTS: ShortcutGroups = {
   'Document': [
     { key: 'Ctrl + S', description: 'Save to history' },
     { key: 'Ctrl + N', description: 'New entry' },
+    { key: 'Ctrl + O', description: 'Open a text file' },
     { key: 'Ctrl + /', description: 'Show keyboard shortcuts' },
   ],
   'View': [

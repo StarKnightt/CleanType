@@ -9,7 +9,7 @@ const EXPORT_DEFAULT_NAME = 'cleantype-export.json';
  * `vite` dev in a browser) we transparently fall back to localStorage so the
  * UI keeps working without the native APIs.
  */
-function isTauri(): boolean {
+export function isTauri(): boolean {
   return (
     typeof window !== 'undefined' &&
     ('__TAURI__' in window || '__TAURI_IPC__' in window)
@@ -152,6 +152,74 @@ function importFromBrowser(): Promise<Entry[] | null> {
         const parsed = parseEntries(String(reader.result));
         resolve(parsed.length > 0 ? parsed : null);
       };
+      reader.onerror = () => resolve(null);
+      reader.readAsText(file);
+    };
+    input.click();
+  });
+}
+
+// --- Plain-text file opening -------------------------------------------------
+
+/** Extensions we treat as openable plain-text documents. */
+const TEXT_EXTENSIONS = ['txt', 'md', 'markdown', 'text', 'log'];
+
+export interface OpenedFile {
+  title: string;
+  content: string;
+}
+
+/** Derive a readable title from a path/name (drops the folder + extension). */
+function fileNameToTitle(pathOrName: string): string {
+  const base = pathOrName.split(/[\\/]/).pop() ?? pathOrName;
+  return base.replace(/\.[^.]+$/, '') || base;
+}
+
+/** Whether a dropped/opened path looks like a plain-text document we handle. */
+export function isTextFilePath(path: string): boolean {
+  const ext = path.split('.').pop()?.toLowerCase() ?? '';
+  return TEXT_EXTENSIONS.includes(ext);
+}
+
+/**
+ * Let the user pick a plain-text file and return its contents. Uses the native
+ * open dialog + a Rust read in the desktop app (so the chosen path bypasses the
+ * sandboxed webview FS scope), and a hidden file input in a plain browser.
+ * Returns null if cancelled.
+ */
+export async function openTextFile(): Promise<OpenedFile | null> {
+  if (!isTauri()) return openFromBrowser();
+
+  const { open } = await import('@tauri-apps/api/dialog');
+  const { invoke } = await import('@tauri-apps/api/tauri');
+  const selected = await open({
+    multiple: false,
+    filters: [{ name: 'Text', extensions: TEXT_EXTENSIONS }],
+  });
+  if (!selected || Array.isArray(selected)) return null;
+
+  const content = await invoke<string>('import_data', { path: selected });
+  return { title: fileNameToTitle(selected), content };
+}
+
+/** Read a text file at an absolute path (used by drag-and-drop in Tauri). */
+export async function readTextFileAtPath(path: string): Promise<OpenedFile> {
+  const { invoke } = await import('@tauri-apps/api/tauri');
+  const content = await invoke<string>('import_data', { path });
+  return { title: fileNameToTitle(path), content };
+}
+
+function openFromBrowser(): Promise<OpenedFile | null> {
+  return new Promise((resolve) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.txt,.md,.markdown,.text,.log,text/plain';
+    input.onchange = () => {
+      const file = input.files?.[0];
+      if (!file) return resolve(null);
+      const reader = new FileReader();
+      reader.onload = () =>
+        resolve({ title: fileNameToTitle(file.name), content: String(reader.result) });
       reader.onerror = () => resolve(null);
       reader.readAsText(file);
     };

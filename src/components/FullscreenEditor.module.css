@@ -1172,4 +1172,64 @@
 .saveButton.hasChanges:hover {
   background: var(--accent-strong);
   color: #fff;
-} 
+}
+
+/* ── Drag-and-drop file overlay ──────────────────────────────── */
+.dropOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-soft);
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  animation: dropFade 0.18s var(--ease-out);
+  pointer-events: none;
+}
+
+.dropCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 30px 46px;
+  border-radius: 20px;
+  border: 1.5px dashed var(--accent);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-float);
+  color: var(--color-primary);
+  animation: dropPop 0.22s var(--ease-spring);
+}
+
+.dropIcon {
+  width: 40px;
+  height: 40px;
+  color: var(--accent);
+}
+
+.dropTitle {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.dropHint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-secondary);
+}
+
+@keyframes dropFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dropPop {
+  from { opacity: 0; transform: scale(0.94) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
